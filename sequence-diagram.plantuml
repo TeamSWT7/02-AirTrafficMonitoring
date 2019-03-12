@@ -1,0 +1,68 @@
+@startuml
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam backgroundColor transparent
+skinparam classBackgroundColor transparent
+skinparam style strictuml
+skinparam SequenceMessageAlign center
+skinparam ParticipantBackgroundColor White
+skinparam noteBackgroundColor White
+skinparam arrowBackgroundColor White
+
+participant Application as APP
+
+participant AirTrafficMonitor as ATM
+participant FlightHandler as FH
+participant Airspace as AS
+participant ConflictHandler as CH
+participant FlightTransponder as FT
+participant TransponderReceiver.dll as TR
+
+APP ->> ATM: Poll(ref flights, ref conflicts)
+activate ATM
+ATM -> FH: UpdateFlights()
+activate FH
+FH -> FT: ReceiveFlightData()
+activate FT
+FT->TR: *get flight data*
+activate TR
+TR-->>FT: flightData
+deactivate TR
+FT-->>FH: flightData
+deactivate FT
+FH->FH: ValidateFlightData(flightdata)
+activate FH
+loop flights
+    note over FH: Check if flights exists
+    opt
+    note over FH: Create flight from\nsingle data entry
+    end
+    FH->AS: InArea(flight)
+    opt
+        AS-->>FH: false
+        note over FH: Remove flight from list
+    end
+    AS-->>FH: true
+    note over FH: Update flight in list
+end
+FH->CH: UpdateConflicts(flights)
+deactivate FH
+deactivate FH
+activate CH
+loop flights
+    CH->CH: CheckForConflict(flight1, flight2)
+    opt
+        note over CH: If there is a conflict\ncreate a new conflict\nand add to the list
+    end
+end
+deactivate CH
+
+ATM->FH: GetFlights()
+FH-->>ATM: flights
+ATM->CH: GetConflicts()
+CH-->>ATM: conflicts
+
+note over ATM: Bind new flights to ref flights\nand new conflicts to ref conflicts
+
+@enduml
