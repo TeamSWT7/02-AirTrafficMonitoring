@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring
 {
-    public class Class1
+    public class AirTrafficMonitoring
     {
     }
 }
