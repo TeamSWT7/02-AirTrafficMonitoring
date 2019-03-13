@@ -45,7 +45,8 @@ FlightHandler --> Flight
 class Flight {
     + tag : String
     + position : Coords
-    + date : String
+    + timestamp : String
+    + altitude : String
 
 }
 Flight --> Coords
