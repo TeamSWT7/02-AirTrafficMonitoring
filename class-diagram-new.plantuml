@@ -1,0 +1,71 @@
+@startuml
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam backgroundColor transparent
+skinparam classBackgroundColor transparent
+skinparam style strictuml
+
+enum MSG_TYPES {
+    FLIGHT_RECEIVED,
+    FLIGHT_PARSED,
+    FLIGHT_VALIDATED,
+    FLIGHT_HANDLED,
+    CONFLICT_ADDED,
+}
+
+class IAirTrafficMonitoring {
+
+}
+
+class MessageDistributionSystem {
+    + Subscribe(globalId, subscriber, localId) : void
+    + Notify(globalId, message) : void
+    + GetInstance() : MessageDistributionSystem
+    --
+    - _subscriberIdList : Dictionary<MSG_TYPES, List<SubscriberId>>
+}
+
+class SubscriberId {
+    + Send(message) : void
+    --
+    - _subscriber : Subscriber
+    - _localId : int
+}
+
+interface IMessage {
+
+}
+
+interface IPublisher {
+
+}
+interface ISubscriber {
+
+}
+
+class FlightTransponderHandler {
+
+}
+IPublisher <|-- IFlightTransponderHandler
+
+class FlightParser {
+
+}
+IPublisher <|-- FlightConverter
+
+class FlightValidator {
+
+}
+IPublisher <|-- FlightValidator
+
+class FlightHandler {
+
+}
+IPublisher <|-- FlightHandler
+
+class ConflictHandler {
+
+}
+
+@enduml

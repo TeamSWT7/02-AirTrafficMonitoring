@@ -5,24 +5,50 @@ skinparam monochrome true
 skinparam backgroundColor transparent
 skinparam classBackgroundColor transparent
 skinparam style strictuml
+'skinparam linetype ortho
+
+class AirTrafficMonitor {
+    + flightTransponderHandler : FlightTransponderHandler
+    + flightParser : FlightParser
+    + flightValidator : FlightValidator
+    + flightHandler : FlightHandler
+    + conflictHandler: ConflictHandler
+    --
+}
+AirTrafficMonitor o--- FlightTransponderHandler
+AirTrafficMonitor o--- FlightParser
+AirTrafficMonitor o--- FlightValidator
+AirTrafficMonitor o--- FlightHandler
+AirTrafficMonitor o--- ConflictHandler
+AirTrafficMonitor o-- Airspace
+
+interface IObserver<T> {
+    + Update(T) : void
+}
+interface ISubject<T> {
+    - _observers : List<Observer<T>>
+    --
+    + Attach(Observer<T>) : void
+    + Detach(Observer<T>) : void
+    + Notify(T) : void
+}
+
+
 
 class Coords {
     x : double
     y : double
 }
-
-class AirTrafficMonitor {
-    + flightHandler : FlightHandler
-    + conflictHandler : ConflictHandler
-    + flightTranspoder : FlightTransponder
-    + airspace : Airspace
+class Flight {
+    + tag : String
+    + position : Coords
+    + timestamp : String
+    + altitude : String
+    + velocity : double
+    + direction : double
     --
-    + Poll() : void
 }
-AirTrafficMonitor --> FlightHandler
-AirTrafficMonitor --> ConflictHandler
-AirTrafficMonitor --> FlightTransponder
-AirTrafficMonitor --> Airspace
+Flight o-- Coords
 
 class Airspace {
     + Length : double <<get>> <<private set>>
@@ -33,47 +59,51 @@ class Airspace {
     + InArea(Flight flight): bool
 }
 
+class FlightTransponderHandler {
+    + flights : List<String>
+    --
+}
+ISubject <|-- FlightTransponderHandler
+
+class FlightParser {
+    - flights : List<Flight>
+    --
+    + GetNext() : Flight
+}
+ISubject <|-- FlightParser
+IObserver <|-- FlightParser
+FlightParser o-- Flight
+
+class FlightValidator {
+    - flights : List<Flight>
+    --
+    + GetNext() : Flight
+}
+ISubject <|-- FlightValidator
+IObserver <|-- FlightValidator
+FlightValidator o-- Flight
+
 class FlightHandler {
-    + flights : List<Flight>
+    - flights : List<Flight>
     --
-    - ValidateFlightData(List<Flight> flightData) : void
-    + GetFlights(): List<Flight> flights
-    - ValidateFlights(List<Flight> flights) : void
+    + GetFlights() : List<Flight>
 }
-FlightHandler --> Flight
-
-class Flight {
-    + tag : String
-    + position : Coords
-    + timestamp : String
-    + altitude : String
-
-}
-Flight --> Coords
-
-class FlightTransponder {
-    --
-    + ReceiveFlightData(): List<Flight> flightData
-}
-FlightTransponder --> TransponderReceiver
-
-class TransponderReceiver<<DLL>> {
-    --
-    GetFlights(): List<Flight> flights
-}
+ISubject <|-- FlightHandler
+IObserver <|-- FlightHandler
+FlightHandler o-- Flight
 
 class ConflictHandler {
-    + conflicts : List<Conflict>
+    - conflicts : List<Conflict>
     --
     - CheckForConflicts(Flight flight1, Flight flight2): void
-    + GetConflicts(): List<Conflict> conflicts
-    + UpdateConflicts(List<Flight> ): void
+    + GetConflicts() : List<Conflict>
 }
-ConflictHandler --> Conflict
+IObserver <|-- ConflictHandler
 
 class Conflict {
     + first : Flight
     + second : Flight
 }
+ConflictHandler o-- Conflict
 
 @enduml
