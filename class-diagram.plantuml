@@ -1,0 +1,112 @@
+@startuml
+
+skinparam shadowing false
+skinparam monochrome true
+skinparam backgroundColor transparent
+skinparam classBackgroundColor transparent
+skinparam style strictuml
+'skinparam linetype ortho
+
+class AirTrafficMonitor {
+    + flightTransponderHandler : FlightTransponderHandler
+    + flightParser : FlightParser
+    + flightValidator : FlightValidator
+    + flightHandler : FlightHandler
+    + conflictHandler: ConflictHandler
+    --
+}
+AirTrafficMonitor o--- FlightTransponderHandler
+AirTrafficMonitor o--- FlightParser
+AirTrafficMonitor o--- FlightValidator
+AirTrafficMonitor o--- FlightHandler
+AirTrafficMonitor o--- ConflictHandler
+AirTrafficMonitor o-- Airspace
+
+interface IObserver<T> {
+    + Update(T) : void
+}
+interface ISubject<T> {
+    - _observers : List<Observer<T>>
+    --
+    + Attach(Observer<T>) : void
+    + Detach(Observer<T>) : void
+    + Notify(T) : void
+}
+
+
+
+class Coords {
+    x : double
+    y : double
+    z : double
+}
+class Flight {
+    + tag : String
+    + position : Coords
+    + timestamp : String
+    + altitude : String
+    + velocity : double
+    + direction : double
+    --
+}
+Flight o-- Coords
+
+class Airspace {
+    + Length : double <<get>> <<private set>>
+    + Depth : double <<get>> <<private set>>
+    + MinHeight : double <<get>> <<private set>>
+    + MaxHeight : double <<get>> <<private set>>
+    --
+    + InArea(Flight flight): bool
+}
+
+class FlightTransponderHandler {
+    - flights : List<String>
+    --
+    + GetNext() : String
+}
+ISubject <|-- FlightTransponderHandler
+
+class FlightParser {
+    - flights : List<Flight>
+    --
+    + GetNext() : Flight
+}
+ISubject <|-- FlightParser
+IObserver <|-- FlightParser
+FlightParser o-- Flight
+
+class FlightValidator {
+    - flights : List<Flight>
+    --
+    + GetNext() : Flight
+}
+ISubject <|-- FlightValidator
+IObserver <|-- FlightValidator
+FlightValidator o-- Flight
+
+class FlightHandler {
+    - flights : List<Flight>
+    --
+    + GetFlights() : List<Flight>
+}
+ISubject <|-- FlightHandler
+IObserver <|-- FlightHandler
+FlightHandler o-- Flight
+
+class ConflictHandler {
+    - conflicts : List<Conflict>
+    --
+    - CheckForConflicts(Flight flight1, Flight flight2): void
+    + GetConflicts() : List<Conflict>
+}
+IObserver <|-- ConflictHandler
+
+class Conflict {
+    + first : Flight
+    + second : Flight
+}
+ConflictHandler o-- Conflict
+Conflict o-- Flight
+
+@enduml
