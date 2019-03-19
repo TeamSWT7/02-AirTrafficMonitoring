@@ -38,6 +38,7 @@ interface ISubject<T> {
 class Coords {
     x : double
     y : double
+    z : double
 }
 class Flight {
     + tag : String
@@ -60,8 +61,9 @@ class Airspace {
 }
 
 class FlightTransponderHandler {
-    + flights : List<String>
+    - flights : List<String>
     --
+    + GetNext() : String
 }
 ISubject <|-- FlightTransponderHandler
 
@@ -105,5 +107,6 @@ class Conflict {
     + second : Flight
 }
 ConflictHandler o-- Conflict
+Conflict o-- Flight
 
 @enduml

@@ -41,7 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AirTrafficMonitoring.cs" />
+    <Compile Include="AirTrafficMonitor.cs" />
+    <Compile Include="Airspace.cs" />
+    <Compile Include="Conflict.cs" />
+    <Compile Include="ConflictHandler.cs" />
+    <Compile Include="Flight.cs" />
+    <Compile Include="FlightHandler.cs" />
+    <Compile Include="FlightParser.cs" />
+    <Compile Include="FlightTransponderHandler.cs" />
+    <Compile Include="FlightValidator.cs" />
+    <Compile Include="IObserver.cs" />
+    <Compile Include="Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
