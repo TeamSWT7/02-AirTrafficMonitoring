@@ -25,7 +25,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void TestReception()
+        public void Test_Event_AttachedFunctionCalled()
         {
             List<string> testData = new List<string>()
             {
@@ -40,6 +40,24 @@ namespace AirTrafficMonitoring.Unit.Test
                 += Raise.EventWith(eventArgs);
             
             _uut.Received().OnReceivedData(null, eventArgs);
+        }
+
+        [Test]
+        public void Test_Event_NotifyWasCalled()
+        {
+            List<string> testData = new List<string>()
+            {
+                "ATR423;39045;12932;14000;20151006213456789",
+                "BCD123;10005;85890;12000;20151006213456789",
+                "XYZ987;25059;75654;4000;20151006213456789",
+            };
+
+            var eventArgs = new RawTransponderDataEventArgs(testData);
+
+            _receiver.TransponderDataReady
+                += Raise.EventWith(eventArgs);
+
+            _uut.Received().Notify(_uut);
         }
     }
 }
