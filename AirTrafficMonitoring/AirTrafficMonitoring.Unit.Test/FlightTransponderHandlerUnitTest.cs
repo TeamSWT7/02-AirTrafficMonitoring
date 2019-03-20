@@ -41,7 +41,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void Test_Event_AttachedFunctionCalled()
+        public void TestEvent_AttachedFunctionCalled()
         {
             ReceiveTestEvent();
             
@@ -49,7 +49,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void Test_Event_NotifyWasCalled()
+        public void TestEvent_NotifyWasCalled()
         {
             ReceiveTestEvent();
 
@@ -57,7 +57,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void Test_Event_GetNextReturnsCorrect()
+        public void TestEvent_GetNextReturnsCorrect()
         {
             ReceiveTestEvent();
 
@@ -65,7 +65,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void Test_Event_GetNextRemovesString()
+        public void TestEvent_FirstStringRemoved_GetNextReturnsCorrect()
         {
             ReceiveTestEvent();
 
