@@ -50,7 +50,7 @@ namespace AirTrafficMonitoring
                 int.Parse(strArray[3])
             );
 
-            flight.timestamp = ParseDate(strArray[4]);
+            flight.timestamp = (DateTime) ParseDate(strArray[4]);
 
             // Check if timestamp is valid (not null)
             if (flight.timestamp == null) return;
