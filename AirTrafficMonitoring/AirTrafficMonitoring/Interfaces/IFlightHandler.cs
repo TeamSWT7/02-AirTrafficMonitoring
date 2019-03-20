@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 namespace AirTrafficMonitoring.Interfaces
 {
-    public interface IFlightHandler
+    public interface IFlightHandler : ISubject<IFlightHandler>, Interfaces.IObserver<FlightParser>
     {
         List<Flight> GetFlights();
     }

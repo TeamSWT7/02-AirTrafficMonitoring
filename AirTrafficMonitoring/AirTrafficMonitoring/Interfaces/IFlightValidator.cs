@@ -1,6 +1,8 @@
-﻿namespace AirTrafficMonitoring.Interfaces
+using System;
+
+namespace AirTrafficMonitoring.Interfaces
 {
-    public interface IFlightValidator
+    public interface IFlightValidator : ISubject<IFlightValidator>, Interfaces.IObserver<FlightHandler>
     {
         
     }
