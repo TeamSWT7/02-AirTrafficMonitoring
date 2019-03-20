@@ -29,7 +29,6 @@ namespace AirTrafficMonitoring
                 if (next.tag == _tempFlights[i].tag)
                 {
                     UpdateFlightInfo(next, _tempFlights[i], _flights[i]);
-                    _flights[i] = _tempFlights[i];
                     f = 1;
                 }
                 else if(i == _flights.Capacity -1 && f != 1)
@@ -52,6 +51,11 @@ namespace AirTrafficMonitoring
             TimeSpan timeSpent = next.timestamp - temp.timestamp;
             double velocity = distance / timeSpent.Seconds;
             return velocity;
+        }
+        private double CalculateDirection(Flight next, Flight temp)
+        {
+            double direction = Math.Atan2((next.position.y - temp.position.y), (next.position.x - temp.position.x));
+            return direction;
         }
 
         public List<Flight> GetFlights()
