@@ -38,6 +38,13 @@ namespace AirTrafficMonitoring
                 }
             }
         }
+        private void UpdateFlightInfo(Flight next, Flight temp, Flight flight)
+        {
+            flight.position = next.position;
+            flight.timestamp = next.timestamp;
+            flight.velocity = CalculateVelocity(next, temp);
+            flight.direction = CalculateDirection(next, temp);
+        }
 
         public List<Flight> GetFlights()
         {
