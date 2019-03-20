@@ -7,8 +7,6 @@ namespace AirTrafficMonitoring
     {
         private List<Conflict> _conflicts = new List<Conflict>();
 
-        
-
         public List<Conflict> GetConflicts()
         {
             return _conflicts;
@@ -16,14 +14,26 @@ namespace AirTrafficMonitoring
 
         public void Update(FlightValidator s)
         {
-            
+            List<Flight> flightList = new List<Flight>();
+            flightList = s.GetList();
+
+            for (int i = 0; i < flightList.Count; i++)
+            {
+                var flightToCheck = flightList[i];
+
+                for (int j = i+1; j < flightList.Count; j++)
+                {
+                    CheckForConflicts(flightToCheck, flightList[j]);
+                }
+            }
         }
 
         private void CheckForConflicts(Flight flight1, Flight flight2)
         {
             if(CheckHorisontalDistance(flight1, flight2) && CheckVerticalDistance(flight1, flight2))
             {
-
+                Conflict conflict = new Conflict(flight1, flight2);
+                _conflicts.Add(conflict);
             }
         }
 

@@ -1,3 +1,5 @@
+using System;
+
 namespace AirTrafficMonitoring
 {
     public class Coords {
@@ -9,7 +11,7 @@ namespace AirTrafficMonitoring
         {
             this.x = x;
             this.y = y;
-            this.y = z;
+            this.z = z;
         }
     }
     
@@ -18,7 +20,7 @@ namespace AirTrafficMonitoring
         public string tag;
         public Coords position;
         public DateTime timestamp;
-        public string altitude;
+        public double altitude;
         public double velocity;
         public double direction;
     }
