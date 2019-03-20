@@ -33,5 +33,22 @@ namespace AirTrafficMonitoring.Unit.Test
 
             _uut.Received().Update(_fakeFlightTransponderHandler);
         }
+
+        [Test]
+        public void FlightParser_TestFlightString_ParsesCorrect()
+        {
+            _uut.Update(_fakeFlightTransponderHandler);
+
+            Flight flight = new Flight
+            {
+                tag = "ATR423",
+                position = new Coords(39045, 12932, 14000),
+                timestamp = new DateTime(2015, 10, 06, 21, 34, 56, 789)
+            };
+
+            Flight result = _uut.GetNext();
+
+            Assert.AreEqual(flight, result);
+        }
     }
 }
