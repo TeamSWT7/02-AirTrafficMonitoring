@@ -11,10 +11,17 @@ namespace AirTrafficMonitoring
         public void Update(IFlightTransponderHandler fth)
         {
             string next = fth.GetNext();
+
+            int i = 0;
+            int max = 10;
+
             while (next != null) {
                 ParseString(next);
 
                 next = fth.GetNext();
+
+                i++;
+                if (i > max) throw new Exception("Too many iterations. Something is not right.");
             }
         }
 
