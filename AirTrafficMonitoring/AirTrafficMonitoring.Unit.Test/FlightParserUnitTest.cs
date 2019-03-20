@@ -89,6 +89,7 @@ namespace AirTrafficMonitoring.Unit.Test
             Assert.IsNull(_uut.GetNext());
         }
 
+        [Test]
         public void ParseDate_ValidValue_ReturnsCorrect()
         {
             DateTime correct = new DateTime(2015, 10, 06, 21, 34, 56, 789);
