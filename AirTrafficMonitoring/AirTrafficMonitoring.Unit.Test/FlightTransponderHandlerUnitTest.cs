@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
@@ -23,10 +19,8 @@ namespace AirTrafficMonitoring.Unit.Test
             _receiver = Substitute.For<ITransponderReceiver>();
 
             _uut = Substitute.For<FlightTransponderHandler>(_receiver);
-        }
 
-        public void ReceiveTestEvent()
-        {
+            // Setup testdata
             List<string> testData = new List<string>()
             {
                 "ATR423;39045;12932;14000;20151006213456789",
@@ -43,32 +37,24 @@ namespace AirTrafficMonitoring.Unit.Test
         [Test]
         public void Test_Event_AttachedFunctionCalled()
         {
-            ReceiveTestEvent();
-            
             _uut.Received().OnReceivedData(null, _testEventArgs);
         }
 
         [Test]
         public void Test_Event_NotifyWasCalled()
         {
-            ReceiveTestEvent();
-
             _uut.Received().Notify(_uut);
         }
 
         [Test]
         public void Test_Event_GetNextReturnsCorrect()
         {
-            ReceiveTestEvent();
-
             Assert.AreEqual(_uut.GetNext(), "ATR423;39045;12932;14000;20151006213456789");
         }
 
         [Test]
         public void Test_Event_GetNextRemovesString()
         {
-            ReceiveTestEvent();
-
             _uut.GetNext();
 
             Assert.AreEqual(_uut.GetNext(), "BCD123;10005;85890;12000;20151006213456789");
