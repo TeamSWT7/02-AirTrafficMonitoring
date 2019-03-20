@@ -1,3 +1,5 @@
+using System;
+
 namespace AirTrafficMonitoring
 {
     public class Coords {
