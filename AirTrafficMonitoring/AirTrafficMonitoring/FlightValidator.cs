@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
+using TransponderReceiver;
+using AirTrafficMonitoring.Interfaces;
 
 
 namespace AirTrafficMonitoring
 {
-    public class FlightValidator : Subject<FlightValidator>, IObserver<FlightHandler>
+    public class FlightValidator : Subject<IFlightValidator>, IFlightValidator
 
     {
         private List<Flight> _flights = new List<Flight>();
