@@ -78,7 +78,6 @@ FlightParser o-- Flight
 class FlightValidator {
     - flights : List<Flight>
     --
-    + GetNext() : Flight
 }
 ISubject <|-- FlightValidator
 IObserver <|-- FlightValidator
