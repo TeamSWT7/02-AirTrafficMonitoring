@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace AirTrafficMonitoring
 {
-    public class ConflictHandler : IObserver<FlightValidator>
+    public class ConflictHandler : Subject<ConflictHandler>, IObserver<FlightValidator>
     {
-        private List<Conflict> _conflicts = new List<Conflict>();
+        private readonly List<Conflict> _conflicts = new List<Conflict>();
 
         public List<Conflict> GetConflicts()
         {
@@ -14,6 +14,8 @@ namespace AirTrafficMonitoring
 
         public void Update(FlightValidator s)
         {
+            _conflicts.Clear();
+
             List<Flight> flightList = new List<Flight>();
             flightList = s.GetList();
 
@@ -26,6 +28,8 @@ namespace AirTrafficMonitoring
                     CheckForConflicts(flightToCheck, flightList[j]);
                 }
             }
+
+            Notify(this);
         }
 
         private void CheckForConflicts(Flight flight1, Flight flight2)
@@ -55,7 +59,7 @@ namespace AirTrafficMonitoring
 
         private bool CheckVerticalDistance(Flight flight1, Flight flight2)
         {
-            if ((flight1.altitude - flight2.altitude) < 300)
+            if (((flight1.position.z - flight2.position.z) <= 300) && ((flight1.position.z - flight2.position.z) >= -300))
             {
                 return true;
             }

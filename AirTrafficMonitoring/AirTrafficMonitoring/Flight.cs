@@ -20,7 +20,6 @@ namespace AirTrafficMonitoring
         public string tag;
         public Coords position;
         public DateTime timestamp;
-        public double altitude;
         public double velocity;
         public double direction;
     }
