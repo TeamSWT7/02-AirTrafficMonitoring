@@ -45,6 +45,14 @@ namespace AirTrafficMonitoring
             flight.velocity = CalculateVelocity(next, temp);
             flight.direction = CalculateDirection(next, temp);
         }
+        private double CalculateVelocity(Flight next, Flight temp)
+        {
+            double distance = Math.Sqrt((temp.position.x - next.position.x) ^ 2 + (temp.position.y - next.position.y) ^
+                                        2 + (temp.position.z - next.position.z) ^ 2);
+            TimeSpan timeSpent = next.timestamp - temp.timestamp;
+            double velocity = distance / timeSpent.Seconds;
+            return velocity;
+        }
 
         public List<Flight> GetFlights()
         {
