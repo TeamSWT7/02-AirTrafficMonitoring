@@ -30,8 +30,8 @@ namespace AirTrafficMonitoring.Unit.Test
         [test]
         public void
         {
-            _fakeFlightHandler
-    }
+
+        }
 
     }
 }
