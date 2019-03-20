@@ -35,29 +35,41 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void TestEvent_AttachedFunctionCalled()
+        public void OnReceivedData_RaisedTestEvent_AttachedFunctionCalled()
         {
             _uut.Received().OnReceivedData(null, _testEventArgs);
         }
 
         [Test]
-        public void TestEvent_NotifyWasCalled()
+        public void TransponderEvent_RaisedEvent_NotifyWasCalled()
         {
             _uut.Received().Notify(_uut);
         }
 
         [Test]
-        public void TestEvent_GetNextReturnsCorrect()
+        public void GetNext_MultipleStrings_FirstReturnsCorrect()
         {
             Assert.AreEqual(_uut.GetNext(), "ATR423;39045;12932;14000;20151006213456789");
         }
 
         [Test]
-        public void TestEvent_FirstStringRemoved_GetNextReturnsCorrect()
+        public void GetNext_MultipleStrings_SecondReturnsCorrect()
         {
             _uut.GetNext();
 
             Assert.AreEqual(_uut.GetNext(), "BCD123;10005;85890;12000;20151006213456789");
+        }
+
+        [Test]
+        public void GetNext_MultipleStrings_ReturnsNullAtEnd()
+        {
+            // Repeat 3 times to empty the testdata list
+            _uut.GetNext();
+            _uut.GetNext();
+            _uut.GetNext();
+            
+            // Since the list is empty, GetNext() should return null.
+            Assert.IsNull(_uut.GetNext());
         }
     }
 }
