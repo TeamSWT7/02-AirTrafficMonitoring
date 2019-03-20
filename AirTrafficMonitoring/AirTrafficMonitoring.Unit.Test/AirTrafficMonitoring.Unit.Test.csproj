@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AirTrafficMonitoringUnitTest.cs" />
-    <Compile Include="ConflictHandlerunitTest.cs" />
+    <Compile Include="ConflictHandlerUnitTest.cs" />
     <Compile Include="FlightTransponderHandlerUnitTest.cs" />
     <Compile Include="FlightParserUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
