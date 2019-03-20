@@ -56,6 +56,8 @@ namespace AirTrafficMonitoring
             if (flight.timestamp == null) return;
 
             _flights.Add(flight);
+
+            Notify(this);
         }
 
         public DateTime? ParseDate(string s)
