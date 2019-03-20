@@ -23,11 +23,11 @@ namespace AirTrafficMonitoring
 
         public Flight GetNext()
         {
-            if (_flight.Count > 0)
+            if (_flights.Count > 0)
             {
-                string r = _flight[0];
+                Flight r = _flights[0];
 
-                _flightStrings.RemoveAt(0);
+                _flights.RemoveAt(0);
 
                 return r;
             }
