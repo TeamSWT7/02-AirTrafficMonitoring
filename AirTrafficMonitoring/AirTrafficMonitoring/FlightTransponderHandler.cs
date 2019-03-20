@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using TransponderReceiver;
+using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
 {
-    public class FlightTransponderHandler : Subject<FlightTransponderHandler>
+    public class FlightTransponderHandler : Subject<IFlightTransponderHandler>, IFlightTransponderHandler
     {
         private ITransponderReceiver _receiver;
         private List<string> _flightStrings;
