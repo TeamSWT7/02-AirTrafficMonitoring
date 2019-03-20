@@ -44,7 +44,6 @@ class Flight {
     + tag : String
     + position : Coords
     + timestamp : String
-    + altitude : String
     + velocity : double
     + direction : double
     --
