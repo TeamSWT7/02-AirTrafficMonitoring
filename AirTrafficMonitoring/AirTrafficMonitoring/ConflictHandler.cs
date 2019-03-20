@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
 {
-    public class ConflictHandler : Subject<ConflictHandler>, IObserver<FlightValidator>
+    public class ConflictHandler : Subject<ConflictHandler>, IConflictHandler
     {
         private readonly List<Conflict> _conflicts = new List<Conflict>();
 
@@ -32,7 +33,7 @@ namespace AirTrafficMonitoring
             Notify(this);
         }
 
-        private void CheckForConflicts(Flight flight1, Flight flight2)
+        public void CheckForConflicts(Flight flight1, Flight flight2)
         {
             if(CheckHorisontalDistance(flight1, flight2) && CheckVerticalDistance(flight1, flight2))
             {
@@ -41,13 +42,13 @@ namespace AirTrafficMonitoring
             }
         }
 
-        private bool CheckHorisontalDistance(Flight flight1, Flight flight2)
+        public bool CheckHorisontalDistance(Flight flight1, Flight flight2)
         {
             var TempXPow = Math.Pow((flight1.position.x - flight2.position.x),2);
             var TempYPow = Math.Pow((flight1.position.y - flight2.position.y), 2);
             double distance = Math.Sqrt(TempXPow + TempYPow);
 
-            if (distance < 500)
+            if (distance <= 500)
             {
                 return true;
             }
@@ -57,7 +58,7 @@ namespace AirTrafficMonitoring
             }
         }
 
-        private bool CheckVerticalDistance(Flight flight1, Flight flight2)
+        public bool CheckVerticalDistance(Flight flight1, Flight flight2)
         {
             if (((flight1.position.z - flight2.position.z) <= 300) && ((flight1.position.z - flight2.position.z) >= -300))
             {
