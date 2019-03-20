@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using TransponderReceiver;
+using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
 {
-    public class FlightParser : Subject<FlightParser>, IObserver<FlightTransponderHandler>
+    public class FlightParser : Subject<IFlightParser>, IFlightParser
     {
         private List<Flight> _flights = new List<Flight>();
-        public void Update(FlightTransponderHandler fth)
+        public void Update(IFlightTransponderHandler fth)
         {
             string next = fth.GetNext();
             while (next != null) {
@@ -50,7 +51,7 @@ namespace AirTrafficMonitoring
                 int.Parse(strArray[3])
             );
 
-            flight.timestamp = ParseDate(strArray[4]);
+            flight.timestamp = (DateTime) ParseDate(strArray[4]);
 
             // Check if timestamp is valid (not null)
             if (flight.timestamp == null) return;

@@ -50,7 +50,10 @@
     <Compile Include="FlightParser.cs" />
     <Compile Include="FlightTransponderHandler.cs" />
     <Compile Include="FlightValidator.cs" />
-    <Compile Include="IObserver.cs" />
+    <Compile Include="Interfaces\IObserver.cs" />
+    <Compile Include="Interfaces\ISubject.cs" />
+    <Compile Include="Interfaces\IFlightParser.cs" />
+    <Compile Include="Interfaces\IFlightTransponderHandler.cs" />
     <Compile Include="Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Reference Include="TransponderReceiver">
