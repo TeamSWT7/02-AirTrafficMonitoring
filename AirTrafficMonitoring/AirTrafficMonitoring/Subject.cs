@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
 {
-    public abstract class Subject<T>
+    public abstract class Subject<T> : ISubject<T>
     {
         public List<IObserver<T>> _observers;
 
