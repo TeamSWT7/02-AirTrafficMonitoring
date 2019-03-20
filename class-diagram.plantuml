@@ -44,7 +44,6 @@ class Flight {
     + tag : String
     + position : Coords
     + timestamp : String
-    + altitude : String
     + velocity : double
     + direction : double
     --
@@ -79,7 +78,6 @@ FlightParser o-- Flight
 class FlightValidator {
     - flights : List<Flight>
     --
-    + GetNext() : Flight
 }
 ISubject <|-- FlightValidator
 IObserver <|-- FlightValidator
