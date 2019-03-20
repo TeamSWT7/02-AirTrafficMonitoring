@@ -18,7 +18,7 @@ namespace AirTrafficMonitoring
             _conflicts.Clear();
 
             List<Flight> flightList = new List<Flight>();
-            flightList = s.GetList();
+            //flightList = s.GetList();
 
             for (int i = 0; i < flightList.Count; i++)
             {
