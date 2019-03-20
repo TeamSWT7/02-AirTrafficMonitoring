@@ -12,9 +12,26 @@ namespace AirTrafficMonitoring
             Flight next = flightParser.GetNext();
             while (next != null)
             {
-                _flights.Add(flightParser.GetNext());
+                _newFlights.Add(flightParser.GetNext());
+                UpdateList(_newFlights, _flights);
+                next = flightParser.GetNext();
             }
             Notify(this);
+        }
+
+        private void UpdateList(List<Flight> newList, List<Flight> list)
+        {
+            if (list.Capacity == 0)
+            {
+                list = newList;
+            }
+            else
+            {
+                foreach (var fligth in newList)
+                {
+                    
+                }
+            }
         }
 
         public List<Flight> GetFlights()
