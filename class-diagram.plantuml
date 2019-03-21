@@ -52,7 +52,7 @@ Flight o-- Coords
 
 class Airspace {
     + Length : double <<get>> <<private set>>
-    + width : double <<get>> <<private set>>
+    + Width : double <<get>> <<private set>>
     + MinHeight : double <<get>> <<private set>>
     + MaxHeight : double <<get>> <<private set>>
     --
