@@ -27,7 +27,7 @@ namespace AirTrafficMonitoring.Unit.Test
             _FakeFlightHandler = Substitute.For<IFlightHandler>();
             _FakeFlightValidator = Substitute.For<IFlightValidator>();
 
-            _uut = Substitute.For<ConflictHandler>();
+            _uut = Substitute.For<ConflictHandler>(300, 500);
         }
 
         [Test]
@@ -43,6 +43,51 @@ namespace AirTrafficMonitoring.Unit.Test
             };
 
             Assert.IsTrue(_uut.CheckVerticalDistance(_flight1, _flight2));
+        }
+
+        [Test]
+        public void CheckVerticalDistance_FlightNotInRange_ResultIsFalse()
+        {
+            _flight1 = new Flight
+            {
+                position = new Coords(15500, 15500, 19000),
+            };
+            _flight2 = new Flight
+            {
+                position = new Coords(15600, 15450, 11000),
+            };
+
+            Assert.IsFalse(_uut.CheckVerticalDistance(_flight1, _flight2));
+        }
+
+        [Test]
+        public void CheckHorizontalDistance_FlightInRange_ResultIsTrue()
+        {
+            _flight1 = new Flight
+            {
+                position = new Coords(15500, 15500, 16000),
+            };
+            _flight2 = new Flight
+            {
+                position = new Coords(15600, 15450, 15900),
+            };
+
+            Assert.IsTrue(_uut.CheckHorizontalDistance(_flight1, _flight2));
+        }
+
+        [Test]
+        public void CheckHorizontalDistance_FlightNotInRange_ResultIsFalse()
+        {
+            _flight1 = new Flight
+            {
+                position = new Coords(87000, 15500, 16000),
+            };
+            _flight2 = new Flight
+            {
+                position = new Coords(15600, 15450, 15900),
+            };
+
+            Assert.IsFalse(_uut.CheckHorizontalDistance(_flight1, _flight2));
         }
     }
 }
