@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AirTrafficMonitor.cs" />
     <Compile Include="Airspace.cs" />
+    <Compile Include="AirTrafficMonitor.cs" />
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandler.cs" />
     <Compile Include="Flight.cs" />
@@ -50,14 +50,14 @@
     <Compile Include="FlightParser.cs" />
     <Compile Include="FlightTransponderHandler.cs" />
     <Compile Include="FlightValidator.cs" />
+    <Compile Include="Subject.cs" />
     <Compile Include="Interfaces\IConflictHandler.cs" />
     <Compile Include="Interfaces\IFlightHandler.cs" />
+    <Compile Include="Interfaces\IFlightParser.cs" />
+    <Compile Include="Interfaces\IFlightTransponderHandler.cs" />
     <Compile Include="Interfaces\IFlightValidator.cs" />
     <Compile Include="Interfaces\IObserver.cs" />
     <Compile Include="Interfaces\ISubject.cs" />
-    <Compile Include="Interfaces\IFlightParser.cs" />
-    <Compile Include="Interfaces\IFlightTransponderHandler.cs" />
-    <Compile Include="Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Reference Include="TransponderReceiver">
       <HintPath>..\TransponderReceiver.dll</HintPath>

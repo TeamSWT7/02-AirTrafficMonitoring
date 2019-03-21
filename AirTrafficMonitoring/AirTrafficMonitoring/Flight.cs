@@ -13,6 +13,15 @@ namespace AirTrafficMonitoring
             this.y = y;
             this.z = z;
         }
+
+        public override bool Equals(object obj)
+        {
+
+            if (!(obj is Coords other))
+                return false;
+
+            return (x == other.x && y == other.y && z == other.z);
+        }
     }
     
     public class Flight
