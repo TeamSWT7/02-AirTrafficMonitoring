@@ -15,9 +15,9 @@ namespace AirTrafficMonitoring
 
         public bool InArea(Flight flight)
         {
-            return ((flight.position.x >= Position.x && flight.position.x < Position.x + Width)
-                && (flight.position.y >= Position.y && flight.position.y < Position.y + Length)
-                && (flight.position.z >= Position.z && flight.position.z < Position.z + Height));
+            return ((flight.position.x >= Position.x && flight.position.x <= Position.x + Width)
+                && (flight.position.y >= Position.y && flight.position.y <= Position.y + Length)
+                && (flight.position.z >= Position.z && flight.position.z <= Position.z + Height));
         }
     }
 }
