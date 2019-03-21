@@ -19,7 +19,7 @@ namespace AirTrafficMonitoring
             Notify(this);
         }
 
-        private void UpdateList(Flight next)
+        public void UpdateList(Flight next)
         {
             foreach(var flight in _flights)
             {
@@ -31,14 +31,14 @@ namespace AirTrafficMonitoring
             }
             _flights.Add(next);
         }
-        private void UpdateFlightInfo(Flight prev, Flight next)
+        public void UpdateFlightInfo(Flight prev, Flight next)
         {
             prev.velocity = CalculateVelocity(prev, next);
             prev.direction = CalculateDirection(prev, next);
             prev.position = next.position;
             prev.timestamp = next.timestamp;
         }
-        private double CalculateVelocity(Flight flight1, Flight flight2)
+        public double CalculateVelocity(Flight flight1, Flight flight2)
         {
             double distance = Math.Sqrt(Math.Pow((flight2.position.x - flight1.position.x), 2) +
                                         Math.Pow((flight2.position.y - flight1.position.y), 2) +
@@ -49,7 +49,7 @@ namespace AirTrafficMonitoring
 
             return velocity;
         }
-        private double CalculateDirection(Flight flight1, Flight flight2)
+        public double CalculateDirection(Flight flight1, Flight flight2)
         {
             double direction = Math.Atan2(
                 (flight2.position.y - flight1.position.y), 
