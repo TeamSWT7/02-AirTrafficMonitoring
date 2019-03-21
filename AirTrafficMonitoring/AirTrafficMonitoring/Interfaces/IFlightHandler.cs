@@ -8,7 +8,7 @@ namespace AirTrafficMonitoring.Interfaces
         List<Flight> GetFlights();
         void UpdateList(Flight next);
         void UpdateFlightInfo(Flight prev, Flight next);
-        double CalculateVelocity(Flight flight1, Flight flight2);
-
+        double CalculateVelocity(Flight prev, Flight next);
+        double CalculateDirection(Flight prev, Flight next);
     }
 }
