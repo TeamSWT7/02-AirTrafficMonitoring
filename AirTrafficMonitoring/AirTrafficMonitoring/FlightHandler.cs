@@ -54,8 +54,8 @@ namespace AirTrafficMonitoring
             double direction = Math.Atan2(
                 (next.position.y - prev.position.y), 
                 (next.position.x - prev.position.x)
-                ) * (360 / Math.PI * 2);
-            return direction;
+                ) * 180 / Math.PI;
+            return direction = (direction + 360) % 360;
         }
 
         public List<Flight> GetFlights()
