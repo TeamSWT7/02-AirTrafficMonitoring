@@ -38,7 +38,7 @@ namespace AirTrafficMonitoring.Unit.Test
             {
                 position = new Coords(1200, 800, 3000)
             };
-            Assert.AreEqual(279.46,_uut.CalculateDirection(_flight1,_flight2),0.1);
+            Assert.AreEqual(279.46,_uut.CalculateDirection(_flight1,_flight2),0.01);
         }
         [Test]
         public void CalculateDirection_NewUpdateSameYCoordinate_ResultIsCorrect()
@@ -72,6 +72,22 @@ namespace AirTrafficMonitoring.Unit.Test
                 timestamp = new DateTime(2019, 03, 21, 18, 10, 5)
             };
             Assert.AreEqual(200, _uut.CalculateVelocity(_flight1,_flight2));
+        }
+
+        [Test]
+        public void CalculateVelocity_NewUpdateCompleteChange_ResultIsCorrect()
+        {
+            _flight1 = new Flight()
+            {
+                position = new Coords(1000, 2000, 3000),
+                timestamp = new DateTime(2019, 03, 21, 18, 10, 0)
+            };
+            _flight2 = new Flight()
+            {
+                position = new Coords(800, 2400, 4500),
+                timestamp = new DateTime(2019, 03, 21, 18, 10, 10)
+            };
+            Assert.AreEqual(156.52, _uut.CalculateVelocity(_flight1, _flight2),0.01);
         }
 
         #endregion
