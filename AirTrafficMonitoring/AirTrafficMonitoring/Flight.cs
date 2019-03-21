@@ -22,6 +22,11 @@ namespace AirTrafficMonitoring
 
             return (x == other.x && y == other.y && z == other.z);
         }
+
+        public override string ToString()
+        {
+            return $"{x}, {y}, {z}";
+        }
     }
     
     public class Flight
@@ -31,5 +36,10 @@ namespace AirTrafficMonitoring
         public DateTime timestamp;
         public double velocity;
         public double direction;
+
+        public override string ToString()
+        {
+            return $"{tag} [{position}] with speed: {velocity} m/s and angle: {direction} deg";
+        }
     }
 }
