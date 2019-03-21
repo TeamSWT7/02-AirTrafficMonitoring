@@ -21,30 +21,39 @@ namespace AirTrafficMonitoring.Unit.Test
         public void init()
         {
             _uut = Substitute.For<Airspace>();
+            
+            _uut.Position = new Coords(500, 500, 500);
+
+            _uut.Width = 30000;
+            _uut.Length = 20000;
+            _uut.Height = 10000;
         }
 
-        [TestCase(10, 10, 10, false)]
-        [TestCase(6000, 6000, 10000, true)]
-        public void InArea_Check(int width, int length, int height, bool result)
+        [TestCase(6000, 6000, 10000)]
+        [TestCase(6000, 20500, 10000)] // Edge case
+        public void InArea_ValidValues_ReturnsTrue(int x, int y, int z)
         {
-            //creating flight
-            Flight _flight = new Flight
+            // Create flight from testcase values
+            Flight flight = new Flight
             {
-                position = new Coords(5000, 5000, 5000),
+                position = new Coords(x, y, z),
             };
-            
-            _uut.Position = new Coords(0, 0, 0);
 
-            //Setting airspace properties to set values
-            _uut.Width = width;
-            _uut.Length = length;
-            _uut.Height = height;
+            Assert.IsTrue(_uut.InArea(flight));
+        }
 
+        [TestCase(400, 10000, 5000)] // Test x
+        [TestCase(15000, 20501, 5000)] // Test y
+        [TestCase(15000, 10000, 12000)] // Test z
+        public void InArea_InvalidValues_ReturnsFalse(int x, int y, int z)
+        {
+            // Create flight frmo testcase values
+            Flight flight = new Flight
+            {
+                position = new Coords(x, y, z),
+            };
 
-            
-            
-            Assert.AreEqual(result, _uut.InArea(_flight));
-
+            Assert.IsFalse(_uut.InArea(flight));
         }
 
     }
