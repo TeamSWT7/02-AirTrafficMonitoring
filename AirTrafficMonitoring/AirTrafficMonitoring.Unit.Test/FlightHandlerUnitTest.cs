@@ -72,6 +72,30 @@ namespace AirTrafficMonitoring.Unit.Test
             Assert.AreEqual(_uut.GetFlights().Count, 0);
         }
 
+        #region UpdateFlightInfo
+        [Test]
+        public void UpdateFlightInfo_NewUpdate_ResultIsCorrect()
+        {
+            Flight flight1 = new Flight()
+            {
+                position = new Coords(1000, 2000, 3000),
+                tag = "AT819",
+                timestamp = new DateTime(2019, 03, 21, 18, 10, 0)
+            };
+            Flight flight2 = new Flight()
+            {
+                position = new Coords(800, 2400, 4500),
+                tag = "AT819",
+                timestamp = new DateTime(2019, 03, 21, 18, 10, 10)
+            };
+            _uut.UpdateFlightInfo(flight1, flight2);
+            flight2.direction = flight1.direction;
+            flight2.velocity = flight1.velocity;
+            Assert.AreSame(flight2, flight1);
+        }
+
+        #endregion
+
         #region CalculateDirection
         [Test]
         public void CalculateDirection_TwoValues_DirectionIsCorret()
@@ -138,30 +162,6 @@ namespace AirTrafficMonitoring.Unit.Test
             };
 
             Assert.AreEqual(156.52, _uut.CalculateVelocity( flight1, flight2), 0.01);
-        }
-
-        #endregion
-
-        #region UpdateFlightInfo
-        [Test]
-        public void UpdateFlightInfo_NewUpdate_ResultIsCorrect()
-        {
-            Flight flight1 = new Flight()
-            {
-                position = new Coords(1000, 2000, 3000),
-                tag = "AT819",
-                timestamp = new DateTime(2019, 03, 21, 18, 10, 0)
-            };
-            Flight flight2 = new Flight()
-            {
-                position = new Coords(800, 2400, 4500),
-                tag = "AT819",
-                timestamp = new DateTime(2019, 03, 21, 18, 10, 10)
-            };
-            _uut.UpdateFlightInfo(flight1, flight2);
-            flight2.direction = flight1.direction;
-            flight2.velocity = flight1.velocity;
-            Assert.AreSame(flight2, flight1);
         }
 
         #endregion
