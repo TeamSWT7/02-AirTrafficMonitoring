@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using AirTrafficMonitoring.Interfaces;
 
-
 namespace AirTrafficMonitoring
 {
     public class FlightValidator : Subject<IFlightValidator>, IFlightValidator
@@ -16,6 +15,27 @@ namespace AirTrafficMonitoring
 
             _flights = fh.GetFlights();
 
+            /*
+            foreach (var flight in _flights)
+            {
+                if (flight.position.x > airspace.x + airspace.width || flight.position.x < airspace.x)
+                {
+                    _flights.Remove(flight);
+                }
+
+                if (flight.position.y > airspace.y + airspace.length || flight.position.y < airspace.y)
+                {
+                    _flights.Remove(flight);
+                }
+
+                if (flight.position.z > airspace.z + airspace.height || flight.position.z < airspace.z)
+                {
+                    _flights.Remove(flight);
+                }
+            }
+            */
+
+            /*
             foreach (var flight in _flights)
             {
                 if (flight.position.x > 80000)
@@ -33,6 +53,26 @@ namespace AirTrafficMonitoring
                     _flights.Remove(flight);
                 }
             }
+            */
+
+            for (int i = _flight.Count - 1; i >= 0; i--)
+            {
+                if ( airspace.inArea = 80000)
+                {
+                    _flights.Remove(flight);
+                }
+
+                if (flight.position.y > 80000)
+                {
+                    _flights.Remove(flight);
+                }
+
+                if (flight.position.z <= 500 || flight.position.z >= 20000)
+                {
+                    _flights.Remove(flight);
+                }
+            }
+
 
             Notify(this);
         }
