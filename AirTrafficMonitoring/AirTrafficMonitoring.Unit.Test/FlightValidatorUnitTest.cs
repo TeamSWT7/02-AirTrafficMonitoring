@@ -33,7 +33,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 position = new Coords(16000, 16000, 15000),
             };
 
-         
+         Assert.That(_airspace.InArea());
            
         }
     }
