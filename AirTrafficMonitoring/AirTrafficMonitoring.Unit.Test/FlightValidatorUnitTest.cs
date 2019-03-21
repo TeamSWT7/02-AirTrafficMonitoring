@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Interfaces;
@@ -21,11 +22,19 @@ namespace AirTrafficMonitoring.Unit.Test
         [SetUp]
         public void Setup()
         {
-            
-            //crating fakes
             _uut = Substitute.For<FlightValidator>();
+        }
 
+        [Test]
+        public void Validate_Flight_inArea_airspace()
+        {
+            _flight = new Flight
+            {
+                position = new Coords(16000, 16000, 15000),
+            };
 
+         
+           
         }
     }
 }
