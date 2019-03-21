@@ -9,9 +9,10 @@ namespace AirTrafficMonitoring
         private List<Flight> _flights = new List<Flight>();
         private List<Flight> _tempFlights = new List<Flight>();
 
-        public void Update(FlightParser flightParser)
+        public void Update(IFlightParser flightParser)
         {
             Flight next = flightParser.GetNext();
+
             while (next != null)
             {
                 _tempFlights = _flights;
@@ -31,7 +32,7 @@ namespace AirTrafficMonitoring
                     UpdateFlightInfo(next, _tempFlights[i], _flights[i]);
                     f = 1;
                 }
-                else if(i == _flights.Capacity -1 && f != 1)
+                else if(i == _flights.Capacity - 1 && f != 1)
                 {
                     _flights.Add(next);
                 }

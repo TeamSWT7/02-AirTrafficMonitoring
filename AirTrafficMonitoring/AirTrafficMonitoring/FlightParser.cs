@@ -10,6 +10,7 @@ namespace AirTrafficMonitoring
         private List<Flight> _flights = new List<Flight>();
         public void Update(IFlightTransponderHandler fth)
         {
+
             string next = fth.GetNext();
 
             int i = 0;
@@ -21,8 +22,10 @@ namespace AirTrafficMonitoring
                 next = fth.GetNext();
 
                 i++;
-                if (i > max) throw new Exception("Too many iterations. Something is not right.");
+                if (i > max) throw new Exception("FlightParser exeeded max iterations in while loop.");
             }
+
+            Notify(this);
         }
 
         public Flight GetNext()
@@ -32,6 +35,8 @@ namespace AirTrafficMonitoring
                 Flight r = _flights[0];
 
                 _flights.RemoveAt(0);
+
+                Console.WriteLine("GetNext(): " + r);
 
                 return r;
             }
@@ -67,8 +72,6 @@ namespace AirTrafficMonitoring
             flight.timestamp = (DateTime) timestamp;
 
             _flights.Add(flight);
-
-            Notify(this);
         }
 
         public DateTime? ParseDate(string s)
