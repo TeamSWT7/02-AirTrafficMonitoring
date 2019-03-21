@@ -8,7 +8,7 @@ namespace AirTrafficMonitoring
     {
         private List<Flight> _flights = new List<Flight>();
 
-        public void Update(FlightParser flightParser)
+        public void Update(IFlightParser flightParser)
         {
             Flight next = flightParser.GetNext();
             while (next != null)

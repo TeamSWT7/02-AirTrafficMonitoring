@@ -2,7 +2,7 @@ using System;
 
 namespace AirTrafficMonitoring.Interfaces
 {
-    public interface IFlightValidator : ISubject<IFlightValidator>, Interfaces.IObserver<FlightHandler>
+    public interface IFlightValidator : ISubject<IFlightHandler>, IObserver<IFlightHandler>
     {
         
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TransponderReceiver;
 using AirTrafficMonitoring.Interfaces;
@@ -33,6 +34,8 @@ namespace AirTrafficMonitoring
         public void OnReceivedData(object sender, RawTransponderDataEventArgs e)
         {
             _flightStrings.AddRange(e.TransponderData);
+
+            Console.WriteLine("Received strings, size: " + _flightStrings.Count);
 
             Notify(this);
         }
