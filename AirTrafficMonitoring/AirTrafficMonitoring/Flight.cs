@@ -25,7 +25,7 @@ namespace AirTrafficMonitoring
 
         public override string ToString()
         {
-            return $"{x}, {y}, {z}";
+            return $"{x,5}, {y,5}, {z,5}";
         }
     }
     
@@ -39,7 +39,7 @@ namespace AirTrafficMonitoring
 
         public override string ToString()
         {
-            return $"{tag} [{position}] with speed: {velocity} m/s and angle: {direction} deg";
+            return $"{tag} [{position}] with speed: {velocity:N2} m/s and angle: {direction:N2} deg";
         }
     }
 }

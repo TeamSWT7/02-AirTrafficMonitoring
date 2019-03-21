@@ -8,73 +8,35 @@ namespace AirTrafficMonitoring
     public class FlightValidator : Subject<IFlightHandler>, IFlightValidator
     {
         private List<Flight> _flights;
+        private Airspace _airspace;
+
+        public FlightValidator()
+        {
+            _airspace = new Airspace
+            {
+                Position = new Coords(0, 0, 500),
+                Width = 80000,
+                Length = 80000,
+                Height = 19500,
+            };
+        }
 
         public void Update(IFlightHandler fh)
         {
-            //gå igennem liste og tjek om de er indenfor x/y/z
-
             _flights = fh.GetFlights();
 
-            /*
-            foreach (var flight in _flights)
+            for (int i = _flights.Count - 1; i >= 0; i--)
             {
-                if (flight.position.x > airspace.x + airspace.width || flight.position.x < airspace.x)
-                {
-                    _flights.Remove(flight);
-                }
-
-                if (flight.position.y > airspace.y + airspace.length || flight.position.y < airspace.y)
-                {
-                    _flights.Remove(flight);
-                }
-
-                if (flight.position.z > airspace.z + airspace.height || flight.position.z < airspace.z)
-                {
-                    _flights.Remove(flight);
-                }
+                ValidateFlight(_flights[i]);
             }
-            */
-
-            /*
-            foreach (var flight in _flights)
-            {
-                if (flight.position.x > 80000)
-                {
-                    _flights.Remove(flight);
-                }
-
-                if (flight.position.y > 80000)
-                {
-                    _flights.Remove(flight);
-                }
-
-                if (flight.position.z <= 500 || flight.position.z >= 20000)
-                {
-                    _flights.Remove(flight);
-                }
-            }
-            */
-
-            for (int i = _flight.Count - 1; i >= 0; i--)
-            {
-                if ( airspace.inArea = 80000)
-                {
-                    _flights.Remove(flight);
-                }
-
-                if (flight.position.y > 80000)
-                {
-                    _flights.Remove(flight);
-                }
-
-                if (flight.position.z <= 500 || flight.position.z >= 20000)
-                {
-                    _flights.Remove(flight);
-                }
-            }
-
 
             Notify(fh);
+        }
+
+        public void ValidateFlight(Flight flight)
+        {
+            if (!_airspace.InArea(flight))
+                _flights.Remove(flight);
         }
     }
 }

@@ -35,8 +35,6 @@ namespace AirTrafficMonitoring
         {
             _flightStrings.AddRange(e.TransponderData);
 
-            Console.WriteLine("Received strings, size: " + _flightStrings.Count);
-
             Notify(this);
         }
     }
