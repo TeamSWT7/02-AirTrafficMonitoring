@@ -33,23 +33,28 @@ namespace AirTrafficMonitoring
         }
         private void UpdateFlightInfo(Flight prev, Flight next)
         {
-            prev.position = next.position;
-            prev.timestamp = next.timestamp;
             prev.velocity = CalculateVelocity(prev, next);
             prev.direction = CalculateDirection(prev, next);
+            prev.position = next.position;
+            prev.timestamp = next.timestamp;
         }
         private double CalculateVelocity(Flight flight1, Flight flight2)
         {
             double distance = Math.Sqrt(Math.Pow((flight2.position.x - flight1.position.x), 2) +
                                         Math.Pow((flight2.position.y - flight1.position.y), 2) +
                                         Math.Pow((flight2.position.z - flight1.position.z), 2));
-            TimeSpan timeSpent = flight1.timestamp - flight2.timestamp;
-            double velocity = distance / timeSpent.Seconds;
+            TimeSpan timeSpent = flight2.timestamp - flight1.timestamp;
+
+            double velocity = distance / (double) (timeSpent.TotalMilliseconds / 1000.0);
+
             return velocity;
         }
         private double CalculateDirection(Flight flight1, Flight flight2)
         {
-            double direction = Math.Atan2((flight1.position.y - flight2.position.y), (flight2.position.x - flight2.position.x));
+            double direction = Math.Atan2(
+                (flight2.position.y - flight1.position.y), 
+                (flight2.position.x - flight1.position.x)
+                ) * (360 / Math.PI * 2);
             return direction;
         }
 
