@@ -21,10 +21,12 @@ namespace AirTrafficMonitoring
 
         public Airspace(double x, double y, double min_z, double max_z)
         {
+            /*
             MinHeight = min_z;
             MaxHeight = max_z;
             Depth = x;
             Length = y;
+            */
         }
 
         public bool InArea(Flight flight)
