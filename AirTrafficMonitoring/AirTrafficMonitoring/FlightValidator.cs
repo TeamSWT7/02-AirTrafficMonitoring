@@ -20,7 +20,7 @@ namespace AirTrafficMonitoring
                 Height = 19500,
             };
         }
-
+        
         public void Update(IFlightHandler fh)
         {
             _flights = fh.GetFlights();
