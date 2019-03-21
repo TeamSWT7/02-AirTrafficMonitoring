@@ -6,11 +6,11 @@ using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
 {
-    public class FlightValidator : Subject<IFlightValidator>, IFlightValidator
+    public class FlightValidator : Subject<IFlightHandler>, IFlightValidator
     {
         private List<Flight> _flights;
 
-        public void Update(FlightHandler fh)
+        public void Update(IFlightHandler fh)
         {
             //gå igennem liste og tjek om de er indenfor x/y/z
 
@@ -34,7 +34,7 @@ namespace AirTrafficMonitoring
                 }
             }
 
-            Notify(this);
+            Notify(fh);
         }
     }
 }

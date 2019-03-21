@@ -4,7 +4,7 @@ using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
 {
-    public class ConflictHandler : Subject<ConflictHandler>, IConflictHandler
+    public class ConflictHandler : Subject<IConflictHandler>, IConflictHandler
     {
         private readonly List<Conflict> _conflicts = new List<Conflict>();
 
@@ -22,12 +22,11 @@ namespace AirTrafficMonitoring
             return _conflicts;
         }
 
-        public void Update(FlightValidator s)
+        public void Update(IFlightHandler fh)
         {
             _conflicts.Clear();
 
-            List<Flight> flightList = new List<Flight>();
-            //flightList = s.GetList();
+            List<Flight> flightList = fh.GetFlights();
 
             for (int i = 0; i < flightList.Count; i++)
             {
