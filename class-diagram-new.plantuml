@@ -6,66 +6,205 @@ skinparam backgroundColor transparent
 skinparam classBackgroundColor transparent
 skinparam style strictuml
 
-enum MSG_TYPES {
-    FLIGHT_RECEIVED,
-    FLIGHT_PARSED,
-    FLIGHT_VALIDATED,
-    FLIGHT_HANDLED,
-    CONFLICT_ADDED,
-}
-
-class IAirTrafficMonitoring {
-
-}
-
-class MessageDistributionSystem {
-    + Subscribe(globalId, subscriber, localId) : void
-    + Notify(globalId, message) : void
-    + GetInstance() : MessageDistributionSystem
+class AirTrafficMonitor {
+    - _flightTransponderHandler : FlightTransponderHandler
+    - _flightParser : FlightParser
+    - _flightValidator : FlightValidator
+    - _flightHandler : FlightHandler
+    - _conflictHandler: ConflictHandler
+    + _printer : IPrinter
     --
-    - _subscriberIdList : Dictionary<MSG_TYPES, List<SubscriberId>>
+    + SetPrinter(IPrinter printer) : void
 }
 
-class SubscriberId {
-    + Send(message) : void
+AirTrafficMonitor o--- FlightTransponderHandler
+AirTrafficMonitor o--- FlightParser
+AirTrafficMonitor o--- FlightValidator
+AirTrafficMonitor o--- FlightHandler
+AirTrafficMonitor o--- ConflictHandler
+AirTrafficMonitor o-- Airspace
+AirTrafficMonitor o-- Printer
+
+interface IObserver<T> {
+    + Update(T) : void
+}
+interface ISubject<T> {
+    - _observers : List<Observer<T>>
     --
-    - _subscriber : Subscriber
-    - _localId : int
+    + Attach(Observer<T>) : void
+    + Detach(Observer<T>) : void
+    + Notify(T) : void
 }
 
-interface IMessage {
-
+interface IConflictHandler {
+  GetConflicts() : List<Conflict>
+  CheckForConflicts(Flight flight1, Flight flight2) : void
+  CheckHorizontalDistance(Flight flight1, Flight flight2) : bool
+  CheckVerticalDistance(Flight flight1, Flight flight2) : bool
 }
 
-interface IPublisher {
+ISubject <|-- IConflictHandler
+IObserver <|-- IConflictHandler
 
+interface IFlightHandler {
+  GetFlights() : List<Flight>
+  UpdateList(Flight next) : void
+  UpdateFlightInfo(Flight prev, Flight next) : void
+  CalculateVelocity(Flight prev, Flight next) : double
+  CalculateDirection(Flight prev, Flight next) : double
 }
-interface ISubscriber {
 
+ISubject <|-- IFlightHandler
+IObserver <|-- IFlightHandler
+
+interface IFlightParser {
+  GetNext() : Flight
+  ParseString(string s) : void
+  ParseDate(string s) : DateTime?
 }
 
-class FlightTransponderHandler {
+IObserver <|-- IFlightParser
+ISubject <|-- IFlightParser
 
+interface IFlightTransponderHandler {
+  GetNext() : string
+  OnReceivedData(object sender, RawTransponderDataEventArgs e) : void
 }
-IPublisher <|-- IFlightTransponderHandler
 
-class FlightParser {
+IObserver <|-- IFlightTransponderHandler
+ISubject <|-- IFlightTransponderHandler
 
+interface IFlightValidator {
+  ValidateFlight(Flight flight) : void
 }
-IPublisher <|-- FlightConverter
 
-class FlightValidator {
+IObserver <|-- IFlightValidator
+ISubject <|-- IFlightValidator
 
+interface IPrinter {
+  SetFlightHandler(IFlightHandler handler) : void
 }
-IPublisher <|-- FlightValidator
 
-class FlightHandler {
+IObserver <|-- IPrinter
+ISubject <|-- IPrinter
 
+class Airspace {
+   + Position : Coords <<get>> <<set>>
+   + Width : int <<get>> <<set>>
+   + Length : int <<get>> <<set>>
+   + Height : int <<get>> <<set>>
+
+   + InArea(Flight flight): bool
 }
-IPublisher <|-- FlightHandler
+
+FlightValidator o-- Airspace
+
+class Conflict {
+  - _first : Flight
+  - _second : Flight
+  + ToString() : string
+}
+
+ConflictHandler o--Conflict
 
 class ConflictHandler {
-
+  - _conflicts : List<Conflict> <<readonly>>
+  + GetConflicts() : List<Conflict>
+  + Update(IFlightHandler fh) : void
+  + CheckForConflicts(Flight flight1, Flight flight2) : void
+  + CheckHorizontalDistance(Flight flight1, Flight flight2) : void
+  + CheckVerticalDistance(Flight flight1, Flight flight2) : void
 }
+
+IConflictHandler <|--ConflictHandler
+Subject <|--ConflictHandler
+
+class Coords{
+  + x : int
+  + y : int
+  + z : int
+  + Equals(object obj) : bool
+  + ToString() : string
+}
+
+Airspace o-- Coords
+Flight o-- Coords
+
+class Flight{
+  + tag : string
+  + position : Coords
+  + timestamp : DateTime
+  + velocity : double
+  + direction : double
+  + Equals(object obj) : bool
+  + ToString() : string
+}
+
+Conflict o--Flight
+FlightParser o--Flight
+FlightHandler o--Flight
+FlightValidator o--Flight
+
+class FlightHandler{
+  - flights : List<Flight>
+  + Update(IFlightParser flightParser) : void
+  + UpdateList(Flight next) : void
+  + UpdateFlightInfor(Flight prev, Flight next) : void
+  + CalculateVelocity(Flight prev, Flight next) : double
+  + CalculateDirection(Flight prev, Flight next) : double
+  + GetFlights() : List<Flight>
+}
+
+IFlightHandler <|-- FlightHandler
+Subject <|-- FlightHandler
+Printer o-- FlightHandler
+
+class FlightParser{
+  - flights : List<Flight>
+  + Update(IFlightTransponderHandler fth) : void
+  + GetNext() : Flight
+  + ParseString(string s) : void
+  + ParseDate(string s) : DateTime?
+}
+
+IFlightParser <|-- FlightParser
+Subject <|-- FlightParser
+
+class FlightTransponderHandler{
+  - _receiver : ITransponderReceiver
+  - _flightStrings : List<string>
+  + GetNext() : string
+  + OnReceivedData(object sender, RawTransponderDataEventArgs e) : void
+}
+
+Subject <|--FlightTransponderHandler
+IFlightTransponderHandler <|-- FlightTransponderHandler
+
+class FlightValidator{
+  - _flights : List<Flight>
+  - _airspace : Airspace
+  + Update(IFlightHandler fh) : void
+  + ValidateFlight(Flight flight) : void
+}
+
+IFlightValidator <|--FlightValidator
+Subject <|-- FlightValidator
+
+class Subject{
+  + _observers : List<IObserver<T>>
+  + Attach(IObserver<T> observer) : void
+  + Detach(IObserver<T> observer) : void
+  + Notify(T s) : void
+}
+
+ISubject <|-- Subject
+
+class Printer{
+  - _flightHandler : IFlightHandler
+  + Update(IConflictHandler ch) : void
+  + SetFlightHandler(IFlightHandler handler) : void
+}
+
+IPrinter <|-- Printer
 
 @enduml
