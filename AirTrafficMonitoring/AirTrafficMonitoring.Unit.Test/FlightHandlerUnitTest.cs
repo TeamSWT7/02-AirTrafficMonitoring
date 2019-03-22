@@ -132,7 +132,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 timestamp = new DateTime(2019,03,22,12,30,00),
                 direction = 168.6
             };
-            _uut.UpdateList(next);
+            _uut.HandleFlight(next);
 
             Assert.AreEqual(next, _uut.GetFlights()[0]);
         }
@@ -156,7 +156,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 timestamp = new DateTime(2019, 03, 22, 12, 30, 00),
                 direction = 168.6
             };
-            _uut.UpdateList(next);
+            _uut.HandleFlight(next);
 
             Assert.AreEqual(next,_uut.GetFlights()[3]);
         }
