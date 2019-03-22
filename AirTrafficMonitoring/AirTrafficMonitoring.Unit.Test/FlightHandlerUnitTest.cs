@@ -45,7 +45,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
         #endregion
 
-        #region
+        #region Update
         [Test]
         public void Update_MultipleValues_ListIsCorrect()
         {
@@ -107,6 +107,34 @@ namespace AirTrafficMonitoring.Unit.Test
             Console.WriteLine(prev.Equals(expected));
 
             Assert.IsTrue(prev.Equals(expected));
+        }
+
+        #endregion
+
+        #region UpdateList
+
+        [Test]
+        public void UpdateList_NewFlight_ListIsUpdated()
+        {
+            _fakeFlightParser.GetNext().Returns(
+                x => _multipleFlights[0],
+                x => _multipleFlights[1],
+                x => _multipleFlights[2],
+                x => null
+            );
+
+            _uut.Update(_fakeFlightParser);
+
+            Flight next = new Flight()
+            {
+                tag = "ATR423",
+                position = new Coords(4000, 20000, 5000),
+                timestamp = new DateTime(2019,03,22,12,30,00),
+                direction = 168.6
+            };
+            _uut.UpdateList(next);
+
+            Assert.AreEqual(next, _uut.GetFlights()[0]);
         }
 
         #endregion
