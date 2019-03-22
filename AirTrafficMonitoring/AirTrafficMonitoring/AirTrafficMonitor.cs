@@ -11,7 +11,7 @@ namespace AirTrafficMonitoring
         private FlightValidator _flightValidator;
         private ConflictHandler _conflictHandler;
 
-        private IPrinter _printer;
+        public IPrinter _printer;
 
         public AirTrafficMonitor(ITransponderReceiver receiver)
         {
@@ -29,10 +29,12 @@ namespace AirTrafficMonitoring
 
         public void SetPrinter(IPrinter printer)
         {
+            // Detach previous printer, if set
             _conflictHandler.Detach(_printer);
 
             _printer = printer;
 
+            // Attach new printer to conflicthandler
             _conflictHandler.Attach(_printer);
             _printer.SetFlightHandler(_flightHandler);
         }
