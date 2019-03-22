@@ -65,13 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AirspaceUnitTest.cs" />
-    <Compile Include="AirTrafficMonitoringUnitTest.cs" />
     <Compile Include="ConflictHandlerUnitTest.cs" />
     <Compile Include="FlightHandlerUnitTest.cs" />
     <Compile Include="FlightTransponderHandlerUnitTest.cs" />
     <Compile Include="FlightParserUnitTest.cs" />
     <Compile Include="FlightValidatorUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubjectUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AirTrafficMonitoring\AirTrafficMonitoring.csproj">
