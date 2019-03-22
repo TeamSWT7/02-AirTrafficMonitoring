@@ -19,7 +19,7 @@ namespace AirTrafficMonitoring
             Notify(this);
         }
 
-        private void UpdateList(Flight next)
+        public void UpdateList(Flight next)
         {
             foreach(var flight in _flights)
             {
@@ -31,31 +31,31 @@ namespace AirTrafficMonitoring
             }
             _flights.Add(next);
         }
-        private void UpdateFlightInfo(Flight prev, Flight next)
+        public void UpdateFlightInfo(Flight prev, Flight next)
         {
             prev.velocity = CalculateVelocity(prev, next);
             prev.direction = CalculateDirection(prev, next);
             prev.position = next.position;
             prev.timestamp = next.timestamp;
         }
-        private double CalculateVelocity(Flight flight1, Flight flight2)
+        public double CalculateVelocity(Flight prev, Flight next)
         {
-            double distance = Math.Sqrt(Math.Pow((flight2.position.x - flight1.position.x), 2) +
-                                        Math.Pow((flight2.position.y - flight1.position.y), 2) +
-                                        Math.Pow((flight2.position.z - flight1.position.z), 2));
-            TimeSpan timeSpent = flight2.timestamp - flight1.timestamp;
+            double distance = Math.Sqrt(Math.Pow((next.position.x - prev.position.x), 2) +
+                                        Math.Pow((next.position.y - prev.position.y), 2) +
+                                        Math.Pow((next.position.z - prev.position.z), 2));
+            TimeSpan timeSpent = next.timestamp - prev.timestamp;
 
             double velocity = distance / (double) (timeSpent.TotalMilliseconds / 1000.0);
 
             return velocity;
         }
-        private double CalculateDirection(Flight flight1, Flight flight2)
+        public double CalculateDirection(Flight prev, Flight next)
         {
             double direction = Math.Atan2(
-                (flight1.position.y - flight2.position.y),
-                (flight2.position.x - flight2.position.x)
-            ) * (360 / Math.PI * 2);
-            return direction;
+                (next.position.y - prev.position.y), 
+                (next.position.x - prev.position.x)
+                ) * 180 / Math.PI;
+            return direction = (direction + 360) % 360;
         }
 
         public List<Flight> GetFlights()

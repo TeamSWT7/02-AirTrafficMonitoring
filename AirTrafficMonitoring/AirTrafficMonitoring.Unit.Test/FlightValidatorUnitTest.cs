@@ -15,75 +15,120 @@ namespace AirTrafficMonitoring.Unit.Test
     public class FlightValidatorUnitTest
     {
         private FlightValidator _uut;
-        private Flight _flight1;
-        private Flight _flight2;
-        private Flight _flight3;
-        private IFlightHandler _FakeFlightHandler;
-        private FlightHandler fh;
+        private IFlightHandler _fakeFlightHandler;
+        private List<Flight> _validFlights;
+        private List<Flight> _oneInvalidFlights;
+        private List<Flight> _twoInvalidFlights;
 
         [SetUp]
         public void Setup()
         {
-            //ceating fake
-            _FakeFlightHandler = Substitute.For<IFlightHandler>();
+            //Ceating fake
+            _fakeFlightHandler = Substitute.For<IFlightHandler>();
 
             _uut = Substitute.For<FlightValidator>();
+
+            _validFlights = new List<Flight>()
+            {
+                new Flight()
+                {
+                    position = new Coords(16000, 16000, 5000)
+                },
+                new Flight()
+                {
+                    position = new Coords(8000, 8000, 20000)
+                },
+                new Flight()
+                {
+                    position = new Coords(8000, 8000,500)
+                }             
+            };
+
+            _oneInvalidFlights = new List<Flight>()
+            {
+                new Flight()
+                {
+                    position = new Coords(16000, 16000, 5000)
+                },
+                new Flight()
+                {
+                    position = new Coords(8000, 8000, 25000) // Invalid, z too high
+                },
+                new Flight()
+                {
+                    position = new Coords(8000, 8000,500)
+                }
+            };
+
+            _twoInvalidFlights = new List<Flight>()
+            {
+                new Flight()
+                {
+                    position = new Coords(16000, 16000, 5000)
+                },
+                new Flight()
+                {
+                    position = new Coords(8000, 8000, 25000)
+                },
+                new Flight()
+                {
+                    position = new Coords(8000, 8000,400) // Invalid, z too low
+                }
+            };
         }
 
-        [TestCase(16000, 16000, 5000, 1)]   // Inside
-        [TestCase(80000, 80000, 20000, 1)]  // On the edge top
-        [TestCase(16000, 16000, 25000, 0)]  // Outside
-        public void Validate_Flight_inArea_airspace_oneFlight(int x, int y, int z, int result)
+        [Test]
+        public void Update_ValidFlights_NoneIsRemoved()
         {
-            _flight1 = new Flight
-            {
-                position = new Coords(x, y, z),
-            };
-          
-            _FakeFlightHandler = new FlightHandler();
 
-            // Adding flight to FlightValidator._flights
-            _FakeFlightHandler.GetFlights().Add(_flight1);
-            _uut.Update(_FakeFlightHandler);
+            _fakeFlightHandler.GetFlights().Returns(_validFlights);
+           
+            _uut.Update(_fakeFlightHandler);
             
-            // Removes flight if flight isn't valid
-            _uut.ValidateFlight(_flight1);
-
             // Checks number of flights in FlightValidator._flights
             // Results indicates number of expected flights
-            Assert.AreEqual(result, _FakeFlightHandler.GetFlights().Count);
-
+            Assert.AreEqual(3, _fakeFlightHandler.GetFlights().Count);
         }
 
-        [TestCase(16000, 16000, 5000, 1)]   // Inside
-        [TestCase(80000, 80000, 20000, 1)]  // On the edge top
-        [TestCase(16000, 16000, 25000, 0)]  // Outside
-        public void Validate_Flight_inArea_airspace_twoFlights(int x, int y, int z, int result)
+        [Test]
+        public void Update_InvalidFlights_OneIsRemoved()
         {
-            _flight2 = new Flight
-            {
-                position = new Coords(15000, 15000, 9001),
-            };
-            _flight3 = new Flight
-            {
-                position = new Coords(x, y, z),
-            };
 
-            _FakeFlightHandler = new FlightHandler();
+            _fakeFlightHandler.GetFlights().Returns(_oneInvalidFlights);
 
-            // Adding flight to FlightValidator._flights
-            _FakeFlightHandler.GetFlights().Add(_flight2);
-            _FakeFlightHandler.GetFlights().Add(_flight3);
-            _uut.Update(_FakeFlightHandler);
-
-            // Removes flight if flight isn't valid
-            _uut.ValidateFlight(_flight3);
+            _uut.Update(_fakeFlightHandler);
 
             // Checks number of flights in FlightValidator._flights
             // Results indicates number of expected flights
-            Assert.AreEqual(result+1, _FakeFlightHandler.GetFlights().Count);
-
+            Assert.AreEqual(2, _fakeFlightHandler.GetFlights().Count);
         }
+
+        [Test]
+        public void Update_InvalidFlights_TwoeIsRemoved()
+        {
+
+            _fakeFlightHandler.GetFlights().Returns(_twoInvalidFlights);
+
+            _uut.Update(_fakeFlightHandler);
+
+            // Checks number of flights in FlightValidator._flights
+            // Results indicates number of expected flights
+            Assert.AreEqual(1, _fakeFlightHandler.GetFlights().Count);
+        }
+
+        [Test]
+        public void Update_ValidFlights_EmptyList()
+        {
+            // Gets empty list and returns that
+            _fakeFlightHandler.GetFlights().Returns(new List<Flight>());
+
+            _uut.Update(_fakeFlightHandler);
+
+            // Checks number of flights in FlightValidator._flights
+            // Results indicates number of expected flights
+            Assert.AreEqual(0, _fakeFlightHandler.GetFlights().Count);
+        }
+
     }
 }
 
