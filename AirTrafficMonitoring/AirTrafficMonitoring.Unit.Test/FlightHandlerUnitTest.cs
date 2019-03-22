@@ -45,6 +45,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
         #endregion
 
+        #region
         [Test]
         public void Update_MultipleValues_ListIsCorrect()
         {
@@ -72,26 +73,23 @@ namespace AirTrafficMonitoring.Unit.Test
             Assert.AreEqual(_uut.GetFlights().Count, 0);
         }
 
+        #endregion
+
         #region UpdateFlightInfo
         [Test]
         public void UpdateFlightInfo_NewUpdate_ResultIsCorrect()
         {
-            Flight flight1 = new Flight()
-            {
-                position = new Coords(1000, 2000, 3000),
-                tag = "AT819",
-                timestamp = new DateTime(2019, 03, 21, 18, 10, 0)
-            };
-            Flight flight2 = new Flight()
-            {
-                position = new Coords(800, 2400, 4500),
-                tag = "AT819",
-                timestamp = new DateTime(2019, 03, 21, 18, 10, 10)
-            };
-            _uut.UpdateFlightInfo(flight1, flight2);
-            flight2.direction = flight1.direction;
-            flight2.velocity = flight1.velocity;
-            Assert.AreSame(flight2, flight1);
+            _fakeFlightParser.GetNext().Returns(
+                x => _multipleFlights[0],
+                x => null
+            );
+            _multipleFlights[1].direction = 111.70;
+            _multipleFlights[1].tag = "ATR423";
+            _uut.UpdateFlightInfo(_multipleFlights[0],_multipleFlights[1]);
+
+            _multipleFlights[0].velocity = 0;
+
+            Assert.AreEqual(_multipleFlights[1], _multipleFlights[0]);
         }
 
         #endregion
@@ -109,7 +107,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 position = new Coords(1200, 800, 3000)
             };
 
-            Assert.AreEqual(279.46, _uut.CalculateDirection(flight1, flight2), 0.01);
+            Assert.AreEqual(279.462, _uut.CalculateDirection(flight1, flight2), 0.001);
         }
         [Test]
         public void CalculateDirection_FlightsSameYCoordinate_DirectionIsCorrect()
@@ -161,7 +159,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 timestamp = new DateTime(2019, 03, 21, 18, 10, 10)
             };
 
-            Assert.AreEqual(156.52, _uut.CalculateVelocity( flight1, flight2), 0.01);
+            Assert.AreEqual(156.524, _uut.CalculateVelocity( flight1, flight2), 0.001);
         }
 
         #endregion
