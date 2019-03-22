@@ -198,7 +198,7 @@ namespace AirTrafficMonitoring.Unit.Test
         #region CalculateVelocity
 
         [Test]
-        public void CalculateVelocity_NewUpdateSimpleChange_ResultIsCorrect()
+        public void CalculateVelocity_XCoordinateChanges_ResultIsCorrect()
         {
             Flight flight1 = new Flight()
             {
@@ -215,7 +215,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void CalculateVelocity_NewUpdateCompleteChange_ResultIsCorrect()
+        public void CalculateVelocity_AllAxisChanges_ResultIsCorrect()
         {
             Flight flight1 = new Flight()
             {
