@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Airspace.cs" />
     <Compile Include="AirTrafficMonitor.cs" />
+    <Compile Include="Coords.cs" />
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandler.cs" />
     <Compile Include="Flight.cs" />
