@@ -20,9 +20,9 @@ namespace AirTrafficMonitoringApplication
             List<Flight> flights = _flightHandler.GetFlights();
             List<Conflict> conflicts = ch.GetConflicts();
 
-            // Console.Clear();
+            Console.Clear();
 
-            Console.WriteLine("Flights:");
+            Console.WriteLine($"Flights ({flights.Count}):");
 
             foreach (var flight in flights)
             {
@@ -30,7 +30,7 @@ namespace AirTrafficMonitoringApplication
             }
             
             Console.WriteLine();
-            Console.WriteLine("Conflicts:");
+            Console.WriteLine($"Conflicts ({conflicts.Count}):");
 
             foreach (var conflict in conflicts)
             {

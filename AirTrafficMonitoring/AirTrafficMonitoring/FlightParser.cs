@@ -14,7 +14,7 @@ namespace AirTrafficMonitoring
             string next = fth.GetNext();
 
             int i = 0;
-            int max = 10;
+            int max = 40;
 
             while (next != null) {
                 ParseString(next);
@@ -35,8 +35,6 @@ namespace AirTrafficMonitoring
                 Flight r = _flights[0];
 
                 _flights.RemoveAt(0);
-
-                Console.WriteLine("GetNext(): " + r);
 
                 return r;
             }
