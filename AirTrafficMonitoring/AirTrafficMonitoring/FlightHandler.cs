@@ -7,55 +7,55 @@ namespace AirTrafficMonitoring
     public class FlightHandler : Subject<IFlightHandler>, IFlightHandler
     {
         private List<Flight> _flights = new List<Flight>();
-        private List<Flight> _tempFlights = new List<Flight>();
 
-        public void Update(FlightParser flightParser)
+        public void Update(IFlightParser flightParser)
         {
             Flight next = flightParser.GetNext();
             while (next != null)
             {
-                _tempFlights = _flights;
                 UpdateList(next);
                 next = flightParser.GetNext();
             }
             Notify(this);
         }
 
-        private void UpdateList(Flight next)
+        public void UpdateList(Flight next)
         {
-            int f = 0;
-            for (int i = 0; i < _flights.Capacity; i++)
+            foreach(var flight in _flights)
             {
-                if (next.tag == _tempFlights[i].tag)
+                if (flight.tag == next.tag)
                 {
-                    UpdateFlightInfo(next, _tempFlights[i], _flights[i]);
-                    f = 1;
-                }
-                else if(i == _flights.Capacity -1 && f != 1)
-                {
-                    _flights.Add(next);
+                    UpdateFlightInfo(flight, next);
+                    return;
                 }
             }
+            _flights.Add(next);
         }
-        private void UpdateFlightInfo(Flight next, Flight temp, Flight flight)
+        public void UpdateFlightInfo(Flight prev, Flight next)
         {
-            flight.position = next.position;
-            flight.timestamp = next.timestamp;
-            flight.velocity = CalculateVelocity(next, temp);
-            flight.direction = CalculateDirection(next, temp);
+            prev.velocity = CalculateVelocity(prev, next);
+            prev.direction = CalculateDirection(prev, next);
+            prev.position = next.position;
+            prev.timestamp = next.timestamp;
         }
-        private double CalculateVelocity(Flight next, Flight temp)
+        public double CalculateVelocity(Flight prev, Flight next)
         {
-            double distance = Math.Sqrt((temp.position.x - next.position.x) ^ 2 + (temp.position.y - next.position.y) ^
-                                        2 + (temp.position.z - next.position.z) ^ 2);
-            TimeSpan timeSpent = next.timestamp - temp.timestamp;
-            double velocity = distance / timeSpent.Seconds;
+            double distance = Math.Sqrt(Math.Pow((next.position.x - prev.position.x), 2) +
+                                        Math.Pow((next.position.y - prev.position.y), 2) +
+                                        Math.Pow((next.position.z - prev.position.z), 2));
+            TimeSpan timeSpent = next.timestamp - prev.timestamp;
+
+            double velocity = distance / (double) (timeSpent.TotalMilliseconds / 1000.0);
+
             return velocity;
         }
-        private double CalculateDirection(Flight next, Flight temp)
+        public double CalculateDirection(Flight prev, Flight next)
         {
-            double direction = Math.Atan2((next.position.y - temp.position.y), (next.position.x - temp.position.x));
-            return direction;
+            double direction = Math.Atan2(
+                (next.position.y - prev.position.y), 
+                (next.position.x - prev.position.x)
+                ) * 180 / Math.PI;
+            return direction = (direction + 360) % 360;
         }
 
         public List<Flight> GetFlights()
