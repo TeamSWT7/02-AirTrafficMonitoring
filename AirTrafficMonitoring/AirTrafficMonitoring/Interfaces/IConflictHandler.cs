@@ -2,7 +2,7 @@
 
 namespace AirTrafficMonitoring.Interfaces
 {
-    public interface IConflictHandler : ISubject<IConflictHandler>, IObserver<IFlightHandler>
+    public interface IConflictHandler : Interfaces.IObserver<FlightValidator>
     {
         List<Conflict> GetConflicts();
         void CheckForConflicts(Flight flight1, Flight flight2);

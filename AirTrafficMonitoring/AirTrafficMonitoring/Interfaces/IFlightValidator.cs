@@ -2,8 +2,8 @@ using System;
 
 namespace AirTrafficMonitoring.Interfaces
 {
-    public interface IFlightValidator : ISubject<IFlightHandler>, IObserver<IFlightHandler>
+    public interface IFlightValidator : ISubject<IFlightValidator>, Interfaces.IObserver<FlightHandler>
     {
-        void ValidateFlight(Flight flight);
+        
     }
 }

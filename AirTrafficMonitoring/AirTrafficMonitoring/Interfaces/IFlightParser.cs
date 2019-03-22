@@ -2,7 +2,7 @@ using System;
 
 namespace AirTrafficMonitoring.Interfaces
 {
-    public interface IFlightParser : ISubject<IFlightParser>, IObserver<IFlightTransponderHandler>
+    public interface IFlightParser : ISubject<IFlightParser>, Interfaces.IObserver<IFlightTransponderHandler>
     {
         Flight GetNext();
         void ParseString(string s);

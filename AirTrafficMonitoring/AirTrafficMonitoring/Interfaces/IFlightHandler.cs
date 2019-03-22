@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AirTrafficMonitoring.Interfaces
 {
-    public interface IFlightHandler : ISubject<IFlightHandler>, IObserver<IFlightParser>
+    public interface IFlightHandler : ISubject<IFlightHandler>, Interfaces.IObserver<FlightParser>
     {
         List<Flight> GetFlights();
     }

@@ -3,40 +3,38 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using AirTrafficMonitoring.Interfaces;
 
+
 namespace AirTrafficMonitoring
 {
-    public class FlightValidator : Subject<IFlightHandler>, IFlightValidator
+    public class FlightValidator : Subject<IFlightValidator>, IFlightValidator
     {
         private List<Flight> _flights;
-        private Airspace _airspace;
 
-        public FlightValidator()
+        public void Update(FlightHandler fh)
         {
-            _airspace = new Airspace
-            {
-                Position = new Coords(0, 0, 500),
-                Width = 80000,
-                Length = 80000,
-                Height = 19500,
-            };
-        }
-        
-        public void Update(IFlightHandler fh)
-        {
+            //gå igennem liste og tjek om de er indenfor x/y/z
+
             _flights = fh.GetFlights();
 
-            for (int i = _flights.Count - 1; i >= 0; i--)
+            foreach (var flight in _flights)
             {
-                ValidateFlight(_flights[i]);
+                if (flight.position.x > 80000)
+                {
+                    _flights.Remove(flight);
+                }
+
+                if (flight.position.y > 80000)
+                {
+                    _flights.Remove(flight);
+                }
+
+                if (flight.position.z <= 500 || flight.position.z >= 20000)
+                {
+                    _flights.Remove(flight);
+                }
             }
 
-            Notify(fh);
-        }
-
-        public void ValidateFlight(Flight flight)
-        {
-            if (!_airspace.InArea(flight))
-                _flights.Remove(flight);
+            Notify(this);
         }
     }
 }

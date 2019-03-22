@@ -4,29 +4,21 @@ using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
 {
-    public class ConflictHandler : Subject<IConflictHandler>, IConflictHandler
+    public class ConflictHandler : Subject<ConflictHandler>, IConflictHandler
     {
         private readonly List<Conflict> _conflicts = new List<Conflict>();
-
-        private int _maxHorizontalDistance;
-        private int _maxVerticalDistance;
-
-        public ConflictHandler(int maxHoriDistance = 500, int maxVertDistance = 300)
-        {
-            _maxHorizontalDistance = maxHoriDistance;
-            _maxVerticalDistance = maxVertDistance;
-        }
 
         public List<Conflict> GetConflicts()
         {
             return _conflicts;
         }
 
-        public void Update(IFlightHandler fh)
+        public void Update(FlightValidator s)
         {
             _conflicts.Clear();
 
-            List<Flight> flightList = fh.GetFlights();
+            List<Flight> flightList = new List<Flight>();
+            //flightList = s.GetList();
 
             for (int i = 0; i < flightList.Count; i++)
             {
@@ -52,17 +44,16 @@ namespace AirTrafficMonitoring
 
         public bool CheckHorizontalDistance(Flight flight1, Flight flight2)
         {
-            var TempXPow = Math.Pow((flight1.position.x - flight2.position.x), 2);
+            var TempXPow = Math.Pow((flight1.position.x - flight2.position.x),2);
             var TempYPow = Math.Pow((flight1.position.y - flight2.position.y), 2);
             double distance = Math.Sqrt(TempXPow + TempYPow);
 
-            return distance <= _maxHorizontalDistance;
+            return distance <= 500;
         }
 
         public bool CheckVerticalDistance(Flight flight1, Flight flight2)
         {
-            return ((flight1.position.z - flight2.position.z) <= _maxVerticalDistance)
-                   && ((flight1.position.z - flight2.position.z) >= -_maxVerticalDistance);
+            return ((flight1.position.z - flight2.position.z) <= 300) && ((flight1.position.z - flight2.position.z) >= -300);
         }
     }
 }

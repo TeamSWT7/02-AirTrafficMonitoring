@@ -10,10 +10,5 @@ namespace AirTrafficMonitoring
             _first = first;
             _second = second;
         }
-
-        public override string ToString()
-        {
-            return $"{_first.tag} ({_first.position}) conflicts with {_second.tag} ({_second.position})";
-        }
     }
 }
