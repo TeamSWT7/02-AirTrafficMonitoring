@@ -207,7 +207,6 @@ namespace AirTrafficMonitoring.Unit.Test
             _uut.Received().Notify(_uut);
         }
         #endregion
-
-
+        
     }
 }
