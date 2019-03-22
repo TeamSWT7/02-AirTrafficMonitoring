@@ -79,24 +79,26 @@ namespace AirTrafficMonitoring.Unit.Test
         [Test]
         public void UpdateFlightInfo_NewUpdate_ResultIsCorrect()
         {
-            _fakeFlightParser.GetNext().Returns(
-                x => _multipleFlights[0],
-                x => null
-            );
-            _multipleFlights[1].direction = 111.70;
-            _multipleFlights[1].tag = "ATR423";
+            _multipleFlights[1].timestamp = new DateTime(2019,03,22,11,20,00);
+            _multipleFlights[0].timestamp = new DateTime(2019,03,22,11,15,00);
             _uut.UpdateFlightInfo(_multipleFlights[0],_multipleFlights[1]);
 
-            _multipleFlights[0].velocity = 0;
+            var expectedFlight = new Flight()
+            {
+                tag = "ATR423",
+                position = new Coords(10005, 85890, 12000),
+                velocity = 261.84,
+                direction = 111.7
+            };
 
-            Assert.AreEqual(_multipleFlights[1], _multipleFlights[0]);
+            Assert.AreEqual(expectedFlight, _multipleFlights[0]);
         }
 
         #endregion
 
         #region CalculateDirection
         [Test]
-        public void CalculateDirection_TwoValues_DirectionIsCorret()
+        public void CalculateDirection_TwoValues_DirectionIsCorrect()
         {
             Flight flight1 = new Flight()
             {
