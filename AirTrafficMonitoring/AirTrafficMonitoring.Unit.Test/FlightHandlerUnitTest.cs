@@ -79,19 +79,34 @@ namespace AirTrafficMonitoring.Unit.Test
         [Test]
         public void UpdateFlightInfo_NewUpdate_ResultIsCorrect()
         {
-            _multipleFlights[1].timestamp = new DateTime(2019,03,22,11,20,00);
-            _multipleFlights[0].timestamp = new DateTime(2019,03,22,11,15,00);
-            _uut.UpdateFlightInfo(_multipleFlights[0],_multipleFlights[1]);
-
-            var expectedFlight = new Flight()
+            Flight prev = new Flight()
             {
                 tag = "ATR423",
                 position = new Coords(10005, 85890, 12000),
+                timestamp = new DateTime(2019, 03, 22, 11, 15, 00),
+            };
+            Flight next = new Flight()
+            {
+                tag = "ATR423",
+                position = new Coords(39045, 12932, 14000),
+                timestamp = new DateTime(2019, 03, 22, 11, 20, 00),
+            };
+            Flight expected = new Flight()
+            {
+                tag = "ATR423",
+                position = new Coords(39045, 12932, 14000),
+                timestamp = new DateTime(2019, 03, 22, 11, 20, 00),
                 velocity = 261.84,
-                direction = 111.7
+                direction = 291.70,
             };
 
-            Assert.AreEqual(expectedFlight, _multipleFlights[0]);
+            _uut.UpdateFlightInfo(prev, next);
+
+            Console.WriteLine(prev);
+            Console.WriteLine(expected);
+            Console.WriteLine(prev.Equals(expected));
+
+            Assert.IsTrue(prev.Equals(expected));
         }
 
         #endregion
