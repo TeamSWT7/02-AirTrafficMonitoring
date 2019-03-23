@@ -8,5 +8,7 @@ namespace AirTrafficMonitoring.Interfaces
         void CheckForConflicts(Flight flight1, Flight flight2);
         bool CheckHorizontalDistance(Flight flight1, Flight flight2);
         bool CheckVerticalDistance(Flight flight1, Flight flight2);
+        void WriteToFile(Conflict conflict);
+        string ReadFromFile();
     }
 }
