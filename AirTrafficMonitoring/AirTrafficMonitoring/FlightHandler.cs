@@ -13,13 +13,13 @@ namespace AirTrafficMonitoring
             Flight next = flightParser.GetNext();
             while (next != null)
             {
-                UpdateList(next);
+                HandleFlight(next);
                 next = flightParser.GetNext();
             }
             Notify(this);
         }
 
-        public void UpdateList(Flight next)
+        public void HandleFlight(Flight next)
         {
             foreach(var flight in _flights)
             {

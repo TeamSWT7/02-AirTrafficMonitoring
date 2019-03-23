@@ -45,7 +45,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
         #endregion
 
-        #region
+        #region Update
         [Test]
         public void Update_MultipleValues_ListIsCorrect()
         {
@@ -111,34 +111,86 @@ namespace AirTrafficMonitoring.Unit.Test
 
         #endregion
 
+        #region UpdateList
+
+        [Test]
+        public void UpdateList_SameTagNewData_ListIsUpdated()
+        {
+            _fakeFlightParser.GetNext().Returns(
+                x => _multipleFlights[0],
+                x => _multipleFlights[1],
+                x => _multipleFlights[2],
+                x => null
+            );
+
+            _uut.Update(_fakeFlightParser);
+
+            Flight next = new Flight()
+            {
+                tag = "ATR423",
+                position = new Coords(4000, 20000, 5000),
+                timestamp = new DateTime(2019,03,22,12,30,00),
+                direction = 168.6
+            };
+            _uut.HandleFlight(next);
+
+            Assert.AreEqual(next, _uut.GetFlights()[0]);
+        }
+
+        [Test]
+        public void UpdateList_NewTag_ListIsUpdated()
+        {
+            _fakeFlightParser.GetNext().Returns(
+                x => _multipleFlights[0],
+                x => _multipleFlights[1],
+                x => _multipleFlights[2],
+                x => null
+            );
+
+            _uut.Update(_fakeFlightParser);
+
+            Flight next = new Flight()
+            {
+                tag = "LNH385",
+                position = new Coords(4000, 20000, 5000),
+                timestamp = new DateTime(2019, 03, 22, 12, 30, 00),
+                direction = 168.6
+            };
+            _uut.HandleFlight(next);
+
+            Assert.AreEqual(next,_uut.GetFlights()[3]);
+        }
+
+        #endregion
+
         #region CalculateDirection
         [Test]
         public void CalculateDirection_TwoValues_DirectionIsCorrect()
         {
-            Flight flight1 = new Flight()
+            Flight prev = new Flight()
             {
                 position = new Coords(1000, 2000, 3000)
             };
-            Flight flight2 = new Flight()
+            Flight next = new Flight()
             {
                 position = new Coords(1200, 800, 3000)
             };
 
-            Assert.AreEqual(279.462, _uut.CalculateDirection(flight1, flight2), 0.001);
+            Assert.AreEqual(279.462, _uut.CalculateDirection(prev, next), 0.001);
         }
         [Test]
-        public void CalculateDirection_FlightsSameYCoordinate_DirectionIsCorrect()
+        public void CalculateDirection_SameYCoordinate_DirectionIsCorrect()
         {
-            Flight flight1 = new Flight()
+            Flight prev = new Flight()
             {
                 position = new Coords(1000, 2000, 3000)
             };
-            Flight flight2 = new Flight()
+            Flight next = new Flight()
             {
                 position = new Coords(1500, 2000, 3000)
             };
 
-            Assert.AreEqual(0, _uut.CalculateDirection(flight1, flight2));
+            Assert.AreEqual(0, _uut.CalculateDirection(prev, next));
         }
 
         #endregion
@@ -146,7 +198,7 @@ namespace AirTrafficMonitoring.Unit.Test
         #region CalculateVelocity
 
         [Test]
-        public void CalculateVelocity_NewUpdateSimpleChange_ResultIsCorrect()
+        public void CalculateVelocity_XCoordinateChanges_ResultIsCorrect()
         {
             Flight flight1 = new Flight()
             {
@@ -163,7 +215,7 @@ namespace AirTrafficMonitoring.Unit.Test
         }
 
         [Test]
-        public void CalculateVelocity_NewUpdateCompleteChange_ResultIsCorrect()
+        public void CalculateVelocity_AllAxisChanges_ResultIsCorrect()
         {
             Flight flight1 = new Flight()
             {
