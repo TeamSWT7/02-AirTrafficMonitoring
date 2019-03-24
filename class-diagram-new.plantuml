@@ -48,7 +48,7 @@ IObserver <|-- IConflictHandler
 
 interface IFlightHandler {
   GetFlights() : List<Flight>
-  UpdateList(Flight next) : void
+  HandleFlight(Flight next) : void
   UpdateFlightInfo(Flight prev, Flight next) : void
   CalculateVelocity(Flight prev, Flight next) : double
   CalculateDirection(Flight prev, Flight next) : double
@@ -148,7 +148,7 @@ FlightValidator o--Flight
 class FlightHandler{
   - flights : List<Flight>
   + Update(IFlightParser flightParser) : void
-  + UpdateList(Flight next) : void
+  + HandleFlight(Flight next) : void
   + UpdateFlightInfor(Flight prev, Flight next) : void
   + CalculateVelocity(Flight prev, Flight next) : double
   + CalculateDirection(Flight prev, Flight next) : double

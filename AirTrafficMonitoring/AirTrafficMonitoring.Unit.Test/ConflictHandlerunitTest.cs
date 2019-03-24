@@ -18,11 +18,13 @@ namespace AirTrafficMonitoring.Unit.Test
         private ConflictHandler _uut;
         private IFlightValidator _FakeFlightValidator;
         private IFlightHandler _FakeFlightHandler;
+        private Conflict _conflict;
         private Flight _flight1;
         private Flight _flight2;
         private List<Flight> testFlightsWithConflicts;
         private List<Flight> testFlightsNoConflicts;
         private List<Flight> EmptyListFlights;
+        private string ReturnedText;
 
         [SetUp]
         public void Setup()
@@ -34,6 +36,8 @@ namespace AirTrafficMonitoring.Unit.Test
             _uut = Substitute.For<ConflictHandler>(300, 500);
 
             EmptyListFlights = new List<Flight>();
+
+            ReturnedText = $"Conflicting flights and time of occurrence\r\nATY (15500, 15500, 16000) conflicts with PRQ (15600, 15450, 15900), Time of occurrence: {DateTime.Now}\r\n\r\n";
 
             testFlightsWithConflicts = new List<Flight>()
             {
@@ -73,7 +77,25 @@ namespace AirTrafficMonitoring.Unit.Test
                 },
             };
 
+            _flight1 = new Flight
+            {
+                tag = "ATY",
+                position = new Coords(15500, 15500, 16000),
+                timestamp = DateTime.Now,
+            };
+
+            _flight2 = new Flight
+            {
+                tag = "PRQ",
+                position = new Coords(15600, 15450, 15900),
+                timestamp = DateTime.Now,
+            };
+
+            _conflict = new Conflict(_flight1, _flight2);
+
         }
+
+        
 
         #endregion
 
@@ -206,7 +228,28 @@ namespace AirTrafficMonitoring.Unit.Test
 
             _uut.Received().Notify(_uut);
         }
+
+        [Test]
+        public void Update_ListWithConflicts_WriteToFileWasCalled()
+        {
+            _FakeFlightHandler.GetFlights().Returns(testFlightsWithConflicts);
+
+            _uut.Update(_FakeFlightHandler);
+
+            _uut.Received().WriteToFile(_conflict);
+        }
+
         #endregion
+
+        #region WriteToFileTests
+
+        [Test]
+        public void WriteToFile_conflict_CorrectConflictWasWrittenToFile()
+        {
+            _uut.WriteToFile(_conflict);
+            Assert.AreEqual(ReturnedText, _uut.ReadFromFile());
+        }
         
+        #endregion
     }
 }
