@@ -24,7 +24,7 @@ namespace AirTrafficMonitoring.Unit.Test
         private List<Flight> testFlightsWithConflicts;
         private List<Flight> testFlightsNoConflicts;
         private List<Flight> EmptyListFlights;
-        private readonly string ReturnedText = $"Conflicting flights and time of occurrence\r\nATY (15500, 15500, 16000) conflicts with PRQ (15600, 15450, 15900), Time of occurrence: {DateTime.Now}\r\n\r\n";
+        private string ReturnedText;
 
         [SetUp]
         public void Setup()
@@ -36,6 +36,8 @@ namespace AirTrafficMonitoring.Unit.Test
             _uut = Substitute.For<ConflictHandler>(300, 500);
 
             EmptyListFlights = new List<Flight>();
+
+            ReturnedText = $"Conflicting flights and time of occurrence\r\nATY (15500, 15500, 16000) conflicts with PRQ (15600, 15450, 15900), Time of occurrence: {DateTime.Now}\r\n\r\n";
 
             testFlightsWithConflicts = new List<Flight>()
             {

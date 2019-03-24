@@ -14,7 +14,7 @@ namespace AirTrafficMonitoring
             string next = fth.GetNext();
 
             int i = 0;
-            int max = 40;
+            int max = 100;
 
             while (next != null) {
                 ParseString(next);
