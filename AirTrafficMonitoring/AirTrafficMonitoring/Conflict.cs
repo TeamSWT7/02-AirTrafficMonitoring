@@ -13,7 +13,7 @@ namespace AirTrafficMonitoring
 
         public override string ToString()
         {
-            return $"{_first.tag} ({_first.position}) conflicts with {_second.tag} ({_second.position})";
+            return $"{_first.tag} ({_first.position}) conflicts with {_second.tag} ({_second.position}), Time of occurrence: {_first.timestamp}";
         }
     }
 }

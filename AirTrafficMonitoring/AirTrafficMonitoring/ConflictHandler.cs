@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using AirTrafficMonitoring.Interfaces;
 
 namespace AirTrafficMonitoring
@@ -8,13 +10,27 @@ namespace AirTrafficMonitoring
     {
         private readonly List<Conflict> _conflicts = new List<Conflict>();
 
+        private string filename = @"..\Conflicts.txt";
+
         private int _maxHorizontalDistance;
         private int _maxVerticalDistance;
+
+        private StreamWriter fs;
 
         public ConflictHandler(int maxHoriDistance = 500, int maxVertDistance = 300)
         {
             _maxHorizontalDistance = maxHoriDistance;
             _maxVerticalDistance = maxVertDistance;
+
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+
+            using (fs = File.CreateText(filename))
+            {
+                fs.WriteLine("Conflicting flights and time of occurrence");
+            }
         }
 
         public List<Conflict> GetConflicts()
@@ -47,6 +63,7 @@ namespace AirTrafficMonitoring
             {
                 Conflict conflict = new Conflict(flight1, flight2);
                 _conflicts.Add(conflict);
+                WriteToFile(conflict);
             }
         }
 
@@ -64,5 +81,24 @@ namespace AirTrafficMonitoring
             return ((flight1.position.z - flight2.position.z) <= _maxVerticalDistance)
                    && ((flight1.position.z - flight2.position.z) >= -_maxVerticalDistance);
         }
+
+       public void WriteToFile(Conflict conflict)
+       {
+           using (var fw = new StreamWriter(filename, true))
+               {
+                   fw.WriteLine(conflict.ToString() + Environment.NewLine);
+
+               }
+       }
+
+       public string ReadFromFile()
+       {
+           string text;
+           using (var fw = new StreamReader(filename))
+           {
+               text = fw.ReadToEnd();
+           }
+           return text;
+       }
     }
 }
