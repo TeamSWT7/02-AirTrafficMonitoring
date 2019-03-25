@@ -97,7 +97,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 position = new Coords(39045, 12932, 14000),
                 timestamp = new DateTime(2019, 03, 22, 11, 20, 00),
                 velocity = 261.84,
-                direction = 291.70,
+                direction = 21.70,
             };
 
             _uut.UpdateFlightInfo(prev, next);
@@ -130,7 +130,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 tag = "ATR423",
                 position = new Coords(4000, 20000, 5000),
                 timestamp = new DateTime(2019,03,22,12,30,00),
-                direction = 168.6
+                direction = 258.6
             };
             _uut.HandleFlight(next);
 
@@ -176,7 +176,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 position = new Coords(1200, 800, 3000)
             };
 
-            Assert.AreEqual(279.462, _uut.CalculateDirection(prev, next), 0.001);
+            Assert.AreEqual(9.462, _uut.CalculateDirection(prev, next), 0.001);
         }
         [Test]
         public void CalculateDirection_SameYCoordinate_DirectionIsCorrect()
@@ -190,7 +190,7 @@ namespace AirTrafficMonitoring.Unit.Test
                 position = new Coords(1500, 2000, 3000)
             };
 
-            Assert.AreEqual(0, _uut.CalculateDirection(prev, next));
+            Assert.AreEqual(90, _uut.CalculateDirection(prev, next));
         }
 
         #endregion
