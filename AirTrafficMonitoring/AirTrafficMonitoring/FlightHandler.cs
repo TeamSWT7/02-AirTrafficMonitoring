@@ -55,7 +55,7 @@ namespace AirTrafficMonitoring
                 (next.position.y - prev.position.y), 
                 (next.position.x - prev.position.x)
                 ) * 180 / Math.PI;
-            return direction = (direction + 360) % 360;
+            return direction = (direction + 450) % 360;
         }
 
         public List<Flight> GetFlights()
